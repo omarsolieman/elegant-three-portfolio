@@ -130,24 +130,44 @@ function BackgroundParticles({ count = 500 }) {
   const mesh = useRef();
   const { viewport } = useThree();
   
-  const [positions, setPositions] = useState([]);
+  const [particles, setParticles] = useState([]);
   
   useEffect(() => {
-    const newPositions = [];
+    const newParticles = [];
     for (let i = 0; i < count; i++) {
-      newPositions.push([
-        (Math.random() - 0.5) * viewport.width * 3,
-        (Math.random() - 0.5) * viewport.height * 3,
-        (Math.random() - 0.5) * 10
-      ]);
+      newParticles.push({
+        position: [
+          (Math.random() - 0.5) * viewport.width * 3,
+          (Math.random() - 0.5) * viewport.height * 3,
+          (Math.random() - 0.5) * 10
+        ],
+        speed: Math.random() * 0.05 + 0.02
+      });
     }
-    setPositions(newPositions);
+    setParticles(newParticles);
   }, [count, viewport]);
+
+  useFrame((state) => {
+    if (mesh.current) {
+      const children = mesh.current.children;
+      for (let i = 0; i < children.length; i++) {
+        // Gentle floating motion
+        children[i].position.y += Math.sin(state.clock.elapsedTime * 0.5 + i) * 0.002;
+        children[i].position.x += Math.cos(state.clock.elapsedTime * 0.3 + i * 0.5) * 0.002;
+        
+        // Slow rotation around center
+        const angle = state.clock.elapsedTime * particles[i].speed * 0.05;
+        const radius = Math.sqrt(Math.pow(particles[i].position[0], 2) + Math.pow(particles[i].position[1], 2));
+        children[i].position.x = Math.sin(angle) * radius * 0.2 + particles[i].position[0] * 0.8;
+        children[i].position.z = Math.cos(angle) * radius * 0.2 + particles[i].position[2] * 0.8;
+      }
+    }
+  });
 
   return (
     <group ref={mesh}>
-      {positions.map((pos, i) => (
-        <mesh key={i} position={pos}>
+      {particles.map((particle, i) => (
+        <mesh key={i} position={particle.position}>
           <sphereGeometry args={[0.02, 8, 8]} />
           <meshBasicMaterial color="#ffffff" transparent opacity={0.5} />
         </mesh>
@@ -206,37 +226,68 @@ function ShootingStar() {
   );
 }
 
-// Colorful glowing orbs that float around
+// Colorful glowing orbs that float around with enhanced movement
 function GlowingOrbs() {
   const colors = ["#ff49db", "#0095ff", "#ff4949", "#00e676", "#ffea00"];
-  const orbs = [];
+  const [orbs, setOrbs] = useState([]);
   
-  for (let i = 0; i < 8; i++) {
-    const x = (Math.random() - 0.5) * 10;
-    const y = (Math.random() - 0.5) * 10;
-    const z = (Math.random() - 0.5) * 5 - 3;
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    const scale = 0.1 + Math.random() * 0.2;
-    
-    orbs.push({ position: [x, y, z], color, scale });
-  }
+  useEffect(() => {
+    const newOrbs = [];
+    for (let i = 0; i < 8; i++) {
+      const x = (Math.random() - 0.5) * 10;
+      const y = (Math.random() - 0.5) * 10;
+      const z = (Math.random() - 0.5) * 5 - 3;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const scale = 0.1 + Math.random() * 0.2;
+      const speed = 0.5 + Math.random() * 1.5; // Varying speeds
+      const radius = 1 + Math.random() * 3; // Movement radius
+      const phaseOffset = Math.random() * Math.PI * 2; // Random starting position
+      
+      newOrbs.push({ position: [x, y, z], color, scale, speed, radius, phaseOffset });
+    }
+    setOrbs(newOrbs);
+  }, []);
   
   return (
     <group>
       {orbs.map((orb, i) => (
-        <Float key={i} speed={1 + Math.random()} rotationIntensity={0.2} floatIntensity={2}>
-          <mesh position={orb.position} scale={orb.scale}>
-            <sphereGeometry args={[1, 16, 16]} />
-            <meshStandardMaterial 
-              color={orb.color} 
-              emissive={orb.color}
-              emissiveIntensity={2}
-              toneMapped={false}
-            />
-          </mesh>
-        </Float>
+        <OrbWithMotion key={i} orb={orb} />
       ))}
     </group>
+  );
+}
+
+// Individual orb with custom motion path
+function OrbWithMotion({ orb }) {
+  const mesh = useRef();
+  const initialPosition = useRef(orb.position);
+  
+  useFrame((state) => {
+    if (mesh.current) {
+      // Create a gentle orbital motion
+      const time = state.clock.elapsedTime;
+      const x = initialPosition.current[0] + Math.sin(time * 0.3 * orb.speed + orb.phaseOffset) * orb.radius * 0.2;
+      const y = initialPosition.current[1] + Math.cos(time * 0.2 * orb.speed + orb.phaseOffset) * orb.radius * 0.15;
+      const z = initialPosition.current[2] + Math.sin(time * 0.4 * orb.speed + orb.phaseOffset) * orb.radius * 0.1;
+      
+      mesh.current.position.set(x, y, z);
+      
+      // Subtle pulse effect
+      const pulse = 1 + Math.sin(time * orb.speed * 0.5) * 0.1;
+      mesh.current.scale.set(orb.scale * pulse, orb.scale * pulse, orb.scale * pulse);
+    }
+  });
+
+  return (
+    <mesh ref={mesh} position={orb.position} scale={orb.scale}>
+      <sphereGeometry args={[1, 16, 16]} />
+      <meshStandardMaterial 
+        color={orb.color} 
+        emissive={orb.color}
+        emissiveIntensity={2}
+        toneMapped={false}
+      />
+    </mesh>
   );
 }
 
