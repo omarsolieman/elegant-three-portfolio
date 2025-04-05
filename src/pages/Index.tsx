@@ -3,6 +3,7 @@ import ThreeScene from "@/components/ThreeScene";
 import Navbar from "@/components/Navbar";
 import AboutSection from "@/components/AboutSection";
 import ProjectsSection from "@/components/ProjectsSection";
+import ArchiveSection from "@/components/ArchiveSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import { ArrowDown, Sparkles } from "lucide-react";
@@ -47,6 +48,9 @@ const Index = () => {
       
       {/* Projects Section */}
       <ProjectsSection />
+      
+      {/* Archive Section */}
+      <ArchiveSection />
       
       {/* Contact Section */}
       <ContactSection />

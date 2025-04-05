@@ -1,7 +1,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera, useGLTF, Environment, Float, Text, Text3D } from '@react-three/drei';
+import { OrbitControls, PerspectiveCamera, useGLTF, Environment, Float, Text, Text3D, Stars } from '@react-three/drei';
 import { Vector3, Euler, MathUtils } from 'three';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -112,6 +112,20 @@ function FloatingName() {
   );
 }
 
+function StarField() {
+  return (
+    <Stars 
+      radius={100} 
+      depth={50} 
+      count={5000} 
+      factor={4} 
+      saturation={0.5} 
+      fade 
+      speed={1} 
+    />
+  );
+}
+
 function BackgroundParticles({ count = 500 }) {
   const mesh = useRef();
   const { viewport } = useThree();
@@ -139,6 +153,56 @@ function BackgroundParticles({ count = 500 }) {
         </mesh>
       ))}
     </group>
+  );
+}
+
+function ShootingStar() {
+  const ref = useRef();
+  const [active, setActive] = useState(false);
+  const [position, setPosition] = useState([0, 0, 0]);
+  const [direction, setDirection] = useState([0, 0, 0]);
+  
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (Math.random() > 0.7) {
+        const x = (Math.random() - 0.5) * 20;
+        const y = (Math.random() - 0.5) * 20;
+        const z = -10;
+        
+        const dx = (Math.random() - 0.5) * 0.2;
+        const dy = -0.1 - Math.random() * 0.1;
+        const dz = 0;
+        
+        setPosition([x, y, z]);
+        setDirection([dx, dy, dz]);
+        setActive(true);
+        
+        setTimeout(() => setActive(false), 1500);
+      }
+    }, 2000);
+    
+    return () => clearInterval(timer);
+  }, []);
+  
+  useFrame(() => {
+    if (ref.current && active) {
+      ref.current.position.x += direction[0];
+      ref.current.position.y += direction[1];
+      ref.current.position.z += direction[2];
+    }
+  });
+  
+  if (!active) return null;
+  
+  return (
+    <mesh ref={ref} position={position}>
+      <sphereGeometry args={[0.05, 8, 8]} />
+      <meshBasicMaterial color="#ffffff" />
+      <mesh position={[0, 0, -0.5]} scale={[1, 1, 10]}>
+        <cylinderGeometry args={[0, 0.05, 1, 8]} />
+        <meshBasicMaterial color="#ffffff" transparent opacity={0.6} />
+      </mesh>
+    </mesh>
   );
 }
 
@@ -186,8 +250,11 @@ export function SceneContent() {
       <CameraController />
       <ambientLight intensity={0.3} />
       <spotLight position={[5, 5, 5]} intensity={0.8} castShadow />
+      <StarField />
       <BackgroundParticles count={750} />
       <GlowingOrbs />
+      <ShootingStar />
+      <ShootingStar />
       
       <Float speed={2} rotationIntensity={0.4} floatIntensity={0.8}>
         <CubeModel 
