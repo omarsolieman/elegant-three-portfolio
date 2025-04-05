@@ -126,14 +126,19 @@ function StarField() {
   );
 }
 
+interface Particle {
+  position: [number, number, number];
+  speed: number;
+}
+
 function BackgroundParticles({ count = 500 }) {
-  const mesh = useRef();
+  const mesh = useRef<THREE.Group>();
   const { viewport } = useThree();
   
-  const [particles, setParticles] = useState([]);
+  const [particles, setParticles] = useState<Particle[]>([]);
   
   useEffect(() => {
-    const newParticles = [];
+    const newParticles: Particle[] = [];
     for (let i = 0; i < count; i++) {
       newParticles.push({
         position: [
@@ -149,18 +154,17 @@ function BackgroundParticles({ count = 500 }) {
 
   useFrame((state) => {
     if (mesh.current) {
-      const children = mesh.current.children;
-      for (let i = 0; i < children.length; i++) {
-        // Gentle floating motion
-        children[i].position.y += Math.sin(state.clock.elapsedTime * 0.5 + i) * 0.002;
-        children[i].position.x += Math.cos(state.clock.elapsedTime * 0.3 + i * 0.5) * 0.002;
+      mesh.current.children.forEach((child, i) => {
+        // More noticeable floating motion
+        child.position.y += Math.sin(state.clock.elapsedTime * 0.5 + i) * 0.004;
+        child.position.x += Math.cos(state.clock.elapsedTime * 0.3 + i * 0.5) * 0.004;
         
-        // Slow rotation around center
-        const angle = state.clock.elapsedTime * particles[i].speed * 0.05;
+        // Faster orbital rotation for more visible movement
+        const angle = state.clock.elapsedTime * particles[i].speed * 0.1;
         const radius = Math.sqrt(Math.pow(particles[i].position[0], 2) + Math.pow(particles[i].position[1], 2));
-        children[i].position.x = Math.sin(angle) * radius * 0.2 + particles[i].position[0] * 0.8;
-        children[i].position.z = Math.cos(angle) * radius * 0.2 + particles[i].position[2] * 0.8;
-      }
+        child.position.x = Math.sin(angle) * radius * 0.3 + particles[i].position[0] * 0.7;
+        child.position.z = Math.cos(angle) * radius * 0.3 + particles[i].position[2] * 0.7;
+      });
     }
   });
 
@@ -168,8 +172,8 @@ function BackgroundParticles({ count = 500 }) {
     <group ref={mesh}>
       {particles.map((particle, i) => (
         <mesh key={i} position={particle.position}>
-          <sphereGeometry args={[0.02, 8, 8]} />
-          <meshBasicMaterial color="#ffffff" transparent opacity={0.5} />
+          <sphereGeometry args={[0.03, 8, 8]} />
+          <meshBasicMaterial color="#ffffff" transparent opacity={0.7} />
         </mesh>
       ))}
     </group>
@@ -179,8 +183,8 @@ function BackgroundParticles({ count = 500 }) {
 function ShootingStar() {
   const ref = useRef();
   const [active, setActive] = useState(false);
-  const [position, setPosition] = useState([0, 0, 0]);
-  const [direction, setDirection] = useState([0, 0, 0]);
+  const [position, setPosition] = useState<[number, number, number]>([0, 0, 0]);
+  const [direction, setDirection] = useState<[number, number, number]>([0, 0, 0]);
   
   useEffect(() => {
     const timer = setInterval(() => {
@@ -215,7 +219,7 @@ function ShootingStar() {
   if (!active) return null;
   
   return (
-    <mesh ref={ref} position={position}>
+    <mesh ref={ref} position={position as any}>
       <sphereGeometry args={[0.05, 8, 8]} />
       <meshBasicMaterial color="#ffffff" />
       <mesh position={[0, 0, -0.5]} scale={[1, 1, 10]}>
@@ -226,13 +230,22 @@ function ShootingStar() {
   );
 }
 
+interface Orb {
+  position: [number, number, number];
+  color: string;
+  scale: number;
+  speed: number;
+  radius: number;
+  phaseOffset: number;
+}
+
 // Colorful glowing orbs that float around with enhanced movement
 function GlowingOrbs() {
   const colors = ["#ff49db", "#0095ff", "#ff4949", "#00e676", "#ffea00"];
-  const [orbs, setOrbs] = useState([]);
+  const [orbs, setOrbs] = useState<Orb[]>([]);
   
   useEffect(() => {
-    const newOrbs = [];
+    const newOrbs: Orb[] = [];
     for (let i = 0; i < 8; i++) {
       const x = (Math.random() - 0.5) * 10;
       const y = (Math.random() - 0.5) * 10;
@@ -243,7 +256,14 @@ function GlowingOrbs() {
       const radius = 1 + Math.random() * 3; // Movement radius
       const phaseOffset = Math.random() * Math.PI * 2; // Random starting position
       
-      newOrbs.push({ position: [x, y, z], color, scale, speed, radius, phaseOffset });
+      newOrbs.push({ 
+        position: [x, y, z], 
+        color, 
+        scale, 
+        speed, 
+        radius, 
+        phaseOffset 
+      });
     }
     setOrbs(newOrbs);
   }, []);
@@ -258,22 +278,22 @@ function GlowingOrbs() {
 }
 
 // Individual orb with custom motion path
-function OrbWithMotion({ orb }) {
-  const mesh = useRef();
-  const initialPosition = useRef(orb.position);
+function OrbWithMotion({ orb }: { orb: Orb }) {
+  const mesh = useRef<THREE.Mesh>();
+  const initialPosition = useRef<[number, number, number]>(orb.position);
   
   useFrame((state) => {
     if (mesh.current) {
-      // Create a gentle orbital motion
+      // Create a more dramatic orbital motion
       const time = state.clock.elapsedTime;
-      const x = initialPosition.current[0] + Math.sin(time * 0.3 * orb.speed + orb.phaseOffset) * orb.radius * 0.2;
-      const y = initialPosition.current[1] + Math.cos(time * 0.2 * orb.speed + orb.phaseOffset) * orb.radius * 0.15;
-      const z = initialPosition.current[2] + Math.sin(time * 0.4 * orb.speed + orb.phaseOffset) * orb.radius * 0.1;
+      const x = initialPosition.current[0] + Math.sin(time * 0.4 * orb.speed + orb.phaseOffset) * orb.radius * 0.3;
+      const y = initialPosition.current[1] + Math.cos(time * 0.3 * orb.speed + orb.phaseOffset) * orb.radius * 0.25;
+      const z = initialPosition.current[2] + Math.sin(time * 0.5 * orb.speed + orb.phaseOffset) * orb.radius * 0.2;
       
       mesh.current.position.set(x, y, z);
       
-      // Subtle pulse effect
-      const pulse = 1 + Math.sin(time * orb.speed * 0.5) * 0.1;
+      // More dramatic pulse effect
+      const pulse = 1 + Math.sin(time * orb.speed * 0.8) * 0.15;
       mesh.current.scale.set(orb.scale * pulse, orb.scale * pulse, orb.scale * pulse);
     }
   });

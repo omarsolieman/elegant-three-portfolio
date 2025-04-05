@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
+import { ResumeDialog } from './ResumeDialog';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -42,7 +43,9 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
-          <Button>Resume</Button>
+          <ResumeDialog>
+            <Button>Resume</Button>
+          </ResumeDialog>
         </nav>
         
         {/* Mobile menu button */}
@@ -67,7 +70,9 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
-          <Button className="mt-2">Resume</Button>
+          <ResumeDialog>
+            <Button className="mt-2">Resume</Button>
+          </ResumeDialog>
         </nav>
       )}
     </header>
