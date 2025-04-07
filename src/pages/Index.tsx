@@ -1,4 +1,3 @@
-
 import ThreeScene from "@/components/ThreeScene";
 import Navbar from "@/components/Navbar";
 import AboutSection from "@/components/AboutSection";
@@ -70,10 +69,6 @@ const Index = () => {
           <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute top-1/4 -right-20 w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }}></div>
           <div className="absolute top-3/4 left-1/3 w-40 h-40 bg-primary/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "2s" }}></div>
-          
-          {/* Shooting star effect */}
-          <div className="absolute top-1/4 left-0 w-1 h-1 bg-white rounded-full animate-[shooting-star_8s_linear_infinite]"></div>
-          <div className="absolute top-1/3 right-0 w-1 h-1 bg-white rounded-full animate-[shooting-star_12s_linear_3s_infinite]"></div>
         </div>
         
         <div className="container mx-auto px-4 md:px-6 relative z-10">
