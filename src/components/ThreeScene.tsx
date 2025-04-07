@@ -1,12 +1,12 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, useGLTF, Environment, Float, Text, Text3D, Stars } from '@react-three/drei';
-import { Vector3, Euler, MathUtils } from 'three';
+import { Vector3, Euler, MathUtils, Group, Mesh } from 'three';
+import * as THREE from 'three';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 function CubeModel({ position, rotation, scale, color, hovered, onClick }) {
-  const mesh = useRef(null);
+  const mesh = useRef<Mesh>(null);
   
   useFrame((state) => {
     if (mesh.current) {
@@ -30,7 +30,7 @@ function CubeModel({ position, rotation, scale, color, hovered, onClick }) {
 }
 
 function SphereModel({ position, scale, color, hovered, onClick }) {
-  const mesh = useRef(null);
+  const mesh = useRef<Mesh>(null);
   
   useFrame((state, delta) => {
     if (mesh.current) {
@@ -52,7 +52,7 @@ function SphereModel({ position, scale, color, hovered, onClick }) {
 }
 
 function TorusModel({ position, rotation, scale, color, hovered, onClick }) {
-  const mesh = useRef(null);
+  const mesh = useRef<Mesh>(null);
   
   useFrame((state) => {
     if (mesh.current) {
@@ -132,7 +132,7 @@ interface Particle {
 }
 
 function BackgroundParticles({ count = 500 }) {
-  const meshRef = useRef<THREE.Group>(null);
+  const meshRef = useRef<Group>(null);
   const { viewport } = useThree();
   
   const [particles, setParticles] = useState<Particle[]>([]);
@@ -183,7 +183,7 @@ function BackgroundParticles({ count = 500 }) {
 }
 
 function ShootingStar() {
-  const ref = useRef<THREE.Mesh>(null);
+  const ref = useRef<Mesh>(null);
   const [active, setActive] = useState(false);
   const [position, setPosition] = useState<[number, number, number]>([0, 0, 0]);
   const [direction, setDirection] = useState<[number, number, number]>([0, 0, 0]);
@@ -281,7 +281,7 @@ function GlowingOrbs() {
 
 // Individual orb with custom motion path
 function OrbWithMotion({ orb }: { orb: Orb }) {
-  const meshRef = useRef<THREE.Mesh>(null);
+  const meshRef = useRef<Mesh>(null);
   const initialPosition = useRef<[number, number, number]>(orb.position);
   
   useFrame((state) => {
