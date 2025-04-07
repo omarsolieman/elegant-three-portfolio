@@ -102,6 +102,26 @@
       transform: translateY(0px);
     }
   }
+  
+  @keyframes shooting-star {
+    0% {
+      transform: translateX(0) translateY(0);
+      opacity: 1;
+      width: 1px;
+      height: 1px;
+    }
+    70% {
+      width: 50px;
+      height: 1px;
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(100vw) translateY(50vh);
+      opacity: 0;
+      width: 100px;
+      height: 1px;
+    }
+  }
 }
 
 /* Custom scroll bar */
