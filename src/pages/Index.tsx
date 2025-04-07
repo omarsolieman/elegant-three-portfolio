@@ -1,3 +1,4 @@
+
 import ThreeScene from "@/components/ThreeScene";
 import Navbar from "@/components/Navbar";
 import AboutSection from "@/components/AboutSection";
@@ -6,7 +7,7 @@ import ArchiveSection from "@/components/ArchiveSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import { ArrowDown, Sparkles } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 // Floating light component
 const FloatingLight = ({ size, delay, duration, left, top, opacity }) => {
@@ -25,12 +26,75 @@ const FloatingLight = ({ size, delay, duration, left, top, opacity }) => {
   );
 };
 
+// Particle effect component
+const ParticleEffect = ({ containerRef }) => {
+  const [particles, setParticles] = useState([]);
+  
+  const createParticle = (x, y) => {
+    const xMove = (Math.random() - 0.5) * 100;
+    const yMove = (Math.random() - 0.5) * 100;
+    const size = Math.random() * 5 + 1;
+    const duration = Math.random() * 2 + 1;
+    
+    return {
+      id: Date.now() + Math.random(),
+      x, 
+      y, 
+      xMove, 
+      yMove, 
+      size, 
+      duration
+    };
+  };
+  
+  const handleMouseMove = (e) => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      if (Math.random() > 0.7) {
+        setParticles(prev => [...prev.slice(-20), createParticle(x, y)]);
+      }
+    }
+  };
+  
+  useEffect(() => {
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener('mousemove', handleMouseMove);
+      return () => container.removeEventListener('mousemove', handleMouseMove);
+    }
+  }, [containerRef]);
+  
+  return (
+    <>
+      {particles.map(particle => (
+        <div
+          key={particle.id}
+          className="particle"
+          style={{
+            left: particle.x,
+            top: particle.y,
+            width: particle.size,
+            height: particle.size,
+            '--x': `${particle.xMove}px`,
+            '--y': `${particle.yMove}px`,
+            animationDuration: `${particle.duration}s`
+          }}
+        ></div>
+      ))}
+    </>
+  );
+};
+
 const Index = () => {
   const [lights, setLights] = useState([]);
+  const heroRef = useRef(null);
   
   useEffect(() => {
     // Generate random floating lights
-    const newLights = Array.from({ length: 15 }, (_, i) => ({
+    const newLights = Array.from({ length: 20 }, (_, i) => ({
       id: i,
       size: Math.random() * 100 + 30,
       delay: Math.random() * 2,
@@ -42,12 +106,39 @@ const Index = () => {
     setLights(newLights);
   }, []);
 
+  // Interactive cursor effect
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setCursorPos({ x: e.clientX, y: e.clientY });
+    };
+    
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
       
+      {/* Custom cursor glow effect */}
+      <div 
+        className="fixed w-40 h-40 rounded-full bg-primary/10 pointer-events-none blur-3xl z-10"
+        style={{
+          left: cursorPos.x - 80,
+          top: cursorPos.y - 80,
+          transform: 'translate3d(0, 0, 0)',
+          transition: 'transform 0.1s ease, opacity 0.2s ease'
+        }}
+      ></div>
+      
       {/* Hero Section */}
-      <section id="home" className="relative min-h-screen flex items-center overflow-hidden">
+      <section 
+        id="home" 
+        className="relative min-h-screen flex items-center overflow-hidden"
+        ref={heroRef}
+      >
         <ThreeScene className="absolute inset-0 z-0" />
         
         {/* Animated background lights */}
@@ -66,14 +157,17 @@ const Index = () => {
           ))}
           
           {/* Fixed position glowing orbs */}
-          <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute top-1/4 -right-20 w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }}></div>
-          <div className="absolute top-3/4 left-1/3 w-40 h-40 bg-primary/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "2s" }}></div>
+          <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-primary/10 rounded-full blur-3xl animate-pulse-glow"></div>
+          <div className="absolute top-1/4 -right-20 w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: "1s" }}></div>
+          <div className="absolute top-3/4 left-1/3 w-40 h-40 bg-primary/5 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: "2s" }}></div>
+          
+          {/* Mouse move particle effect */}
+          <ParticleEffect containerRef={heroRef} />
         </div>
         
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center justify-center mb-4 p-2 bg-secondary/30 rounded-full backdrop-blur-md">
+            <div className="inline-flex items-center justify-center mb-4 p-2 bg-secondary/30 rounded-full backdrop-blur-md moving-border">
               <Sparkles className="w-5 h-5 mr-2 text-primary/70 animate-pulse" />
               <span className="text-sm font-medium">Welcome to my creative space</span>
             </div>
@@ -81,15 +175,15 @@ const Index = () => {
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold mb-6 text-gradient animate-fade-in glow">
               Creative Developer & 3D Enthusiast
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto animate-shimmer">
               I build engaging digital experiences with modern web technologies and creative 3D visuals.
             </p>
             <div className="relative">
-              <div className="absolute -left-16 top-0 w-12 h-12 blur-2xl bg-primary/40 rounded-full animate-pulse"></div>
-              <div className="absolute -right-8 -bottom-8 w-20 h-20 blur-2xl bg-primary/30 rounded-full animate-pulse" style={{ animationDelay: "1s" }}></div>
+              <div className="absolute -left-16 top-0 w-12 h-12 blur-2xl bg-primary/40 rounded-full animate-pulse-glow"></div>
+              <div className="absolute -right-8 -bottom-8 w-20 h-20 blur-2xl bg-primary/30 rounded-full animate-pulse-glow" style={{ animationDelay: "1s" }}></div>
               <a 
                 href="#about" 
-                className="relative inline-flex items-center justify-center w-12 h-12 rounded-full bg-secondary/50 hover:bg-secondary backdrop-blur-sm transition-colors animate-bounce border border-white/10"
+                className="relative inline-flex items-center justify-center w-12 h-12 rounded-full bg-secondary/50 hover:bg-secondary backdrop-blur-sm transition-colors animate-bounce border border-white/10 hover-glow"
               >
                 <ArrowDown className="w-6 h-6" />
               </a>
@@ -114,9 +208,9 @@ const Index = () => {
       <Footer />
 
       {/* Decorative Elements */}
-      <div className="fixed -bottom-40 -left-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl"></div>
-      <div className="fixed -top-20 -right-20 w-60 h-60 bg-primary/5 rounded-full blur-3xl"></div>
-      <div className="fixed top-1/3 -left-20 w-40 h-40 bg-primary/5 rounded-full blur-3xl"></div>
+      <div className="fixed -bottom-40 -left-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-pulse-glow"></div>
+      <div className="fixed -top-20 -right-20 w-60 h-60 bg-primary/5 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: "1.5s" }}></div>
+      <div className="fixed top-1/3 -left-20 w-40 h-40 bg-primary/5 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: "3s" }}></div>
     </div>
   );
 };
