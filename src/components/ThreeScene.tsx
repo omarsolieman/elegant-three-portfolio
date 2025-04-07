@@ -1,3 +1,4 @@
+
 import { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, useGLTF, Environment, Float, Text, Text3D, Stars } from '@react-three/drei';
@@ -129,6 +130,8 @@ function StarField() {
 interface Particle {
   position: [number, number, number];
   speed: number;
+  size: number;
+  amplitude: number;
 }
 
 function BackgroundParticles({ count = 500 }) {
@@ -146,7 +149,9 @@ function BackgroundParticles({ count = 500 }) {
           (Math.random() - 0.5) * viewport.height * 3,
           (Math.random() - 0.5) * 10
         ],
-        speed: Math.random() * 0.05 + 0.02
+        speed: Math.random() * 0.15 + 0.05, // Increased speed range
+        size: Math.random() * 0.05 + 0.03, // Varying sizes
+        amplitude: Math.random() * 1.5 + 0.5 // Movement amplitude
       });
     }
     setParticles(newParticles);
@@ -156,15 +161,24 @@ function BackgroundParticles({ count = 500 }) {
     if (meshRef.current) {
       meshRef.current.children.forEach((child, i) => {
         if (i < particles.length) {
-          // More noticeable floating motion
-          child.position.y += Math.sin(state.clock.elapsedTime * 0.5 + i) * 0.004;
-          child.position.x += Math.cos(state.clock.elapsedTime * 0.3 + i * 0.5) * 0.004;
+          const time = state.clock.elapsedTime;
+          // More dramatic floating motion with increased amplitude
+          child.position.y += Math.sin(time * 0.8 + i) * 0.012 * particles[i].amplitude;
+          child.position.x += Math.cos(time * 0.5 + i * 0.5) * 0.015 * particles[i].amplitude;
           
-          // Faster orbital rotation for more visible movement
-          const angle = state.clock.elapsedTime * particles[i].speed * 0.1;
+          // More visible circular movement
+          const angle = time * particles[i].speed * 0.2; // Increased multiplier
           const radius = Math.sqrt(Math.pow(particles[i].position[0], 2) + Math.pow(particles[i].position[1], 2));
-          child.position.x = Math.sin(angle) * radius * 0.3 + particles[i].position[0] * 0.7;
-          child.position.z = Math.cos(angle) * radius * 0.3 + particles[i].position[2] * 0.7;
+          child.position.x = Math.sin(angle) * radius * 0.4 + particles[i].position[0] * 0.6;
+          child.position.z = Math.cos(angle) * radius * 0.4 + particles[i].position[2] * 0.6;
+          
+          // Pulsing effect for added visibility
+          const pulse = 1 + Math.sin(time * 0.5 + i) * 0.3;
+          child.scale.set(
+            particles[i].size * pulse,
+            particles[i].size * pulse,
+            particles[i].size * pulse
+          );
         }
       });
     }
@@ -174,8 +188,30 @@ function BackgroundParticles({ count = 500 }) {
     <group ref={meshRef}>
       {particles.map((particle, i) => (
         <mesh key={i} position={particle.position}>
-          <sphereGeometry args={[0.03, 8, 8]} />
-          <meshBasicMaterial color="#ffffff" transparent opacity={0.7} />
+          <sphereGeometry args={[particle.size, 8, 8]} />
+          <meshBasicMaterial 
+            color="#ffffff" 
+            transparent 
+            opacity={0.9} // Increased opacity
+          >
+            <primitive attach="onBeforeCompile" object={(shader) => {
+              shader.fragmentShader = shader.fragmentShader.replace(
+                '#include <output_fragment>',
+                `
+                vec3 outgoingLight = diffuseColor.rgb;
+                gl_FragColor = vec4(outgoingLight, diffuseColor.a);
+                gl_FragColor.rgb += vec3(0.1, 0.1, 0.1) * (0.5 + 0.5 * sin(vUv.x * 10.0 + vUv.y * 15.0 + time * 5.0));
+                `
+              );
+              shader.uniforms.time = { value: 0 };
+              function updateTime(renderer) {
+                shader.uniforms.time.value = performance.now() / 1000;
+              }
+              if (meshRef.current) {
+                meshRef.current.onBeforeRender = updateTime;
+              }
+            }} />
+          </meshBasicMaterial>
         </mesh>
       ))}
     </group>
@@ -241,22 +277,22 @@ interface Orb {
   phaseOffset: number;
 }
 
-// Colorful glowing orbs that float around with enhanced movement
+// Enhanced glowing orbs with more dramatic movement
 function GlowingOrbs() {
-  const colors = ["#ff49db", "#0095ff", "#ff4949", "#00e676", "#ffea00"];
+  const colors = ["#ffffff", "#f8f8ff", "#f5f5f5", "#fffafa", "#f0f8ff"];
   const [orbs, setOrbs] = useState<Orb[]>([]);
   
   useEffect(() => {
     const newOrbs: Orb[] = [];
-    for (let i = 0; i < 8; i++) {
-      const x = (Math.random() - 0.5) * 10;
-      const y = (Math.random() - 0.5) * 10;
+    for (let i = 0; i < 12; i++) { // Increased count
+      const x = (Math.random() - 0.5) * 12;
+      const y = (Math.random() - 0.5) * 12;
       const z = (Math.random() - 0.5) * 5 - 3;
       const color = colors[Math.floor(Math.random() * colors.length)];
-      const scale = 0.1 + Math.random() * 0.2;
-      const speed = 0.5 + Math.random() * 1.5; // Varying speeds
-      const radius = 1 + Math.random() * 3; // Movement radius
-      const phaseOffset = Math.random() * Math.PI * 2; // Random starting position
+      const scale = 0.1 + Math.random() * 0.3; // Larger size range
+      const speed = 0.8 + Math.random() * 2.0; // Faster speeds
+      const radius = 1.5 + Math.random() * 4; // Larger movement radius
+      const phaseOffset = Math.random() * Math.PI * 2;
       
       newOrbs.push({ 
         position: [x, y, z], 
@@ -279,24 +315,28 @@ function GlowingOrbs() {
   );
 }
 
-// Individual orb with custom motion path
+// Individual orb with enhanced motion path
 function OrbWithMotion({ orb }: { orb: Orb }) {
   const meshRef = useRef<Mesh>(null);
   const initialPosition = useRef<[number, number, number]>(orb.position);
   
   useFrame((state) => {
     if (meshRef.current) {
-      // Create a more dramatic orbital motion
+      // More dramatic and visible orbital motion
       const time = state.clock.elapsedTime;
-      const x = initialPosition.current[0] + Math.sin(time * 0.4 * orb.speed + orb.phaseOffset) * orb.radius * 0.3;
-      const y = initialPosition.current[1] + Math.cos(time * 0.3 * orb.speed + orb.phaseOffset) * orb.radius * 0.25;
-      const z = initialPosition.current[2] + Math.sin(time * 0.5 * orb.speed + orb.phaseOffset) * orb.radius * 0.2;
+      const x = initialPosition.current[0] + Math.sin(time * 0.6 * orb.speed + orb.phaseOffset) * orb.radius * 0.4;
+      const y = initialPosition.current[1] + Math.cos(time * 0.5 * orb.speed + orb.phaseOffset) * orb.radius * 0.35;
+      const z = initialPosition.current[2] + Math.sin(time * 0.7 * orb.speed + orb.phaseOffset) * orb.radius * 0.3;
       
       meshRef.current.position.set(x, y, z);
       
       // More dramatic pulse effect
-      const pulse = 1 + Math.sin(time * orb.speed * 0.8) * 0.15;
+      const pulse = 1 + Math.sin(time * orb.speed) * 0.3;
       meshRef.current.scale.set(orb.scale * pulse, orb.scale * pulse, orb.scale * pulse);
+      
+      // Add rotation for more visual interest
+      meshRef.current.rotation.x += 0.001 * orb.speed;
+      meshRef.current.rotation.y += 0.001 * orb.speed;
     }
   });
 
@@ -306,8 +346,14 @@ function OrbWithMotion({ orb }: { orb: Orb }) {
       <meshStandardMaterial 
         color={orb.color} 
         emissive={orb.color}
-        emissiveIntensity={2}
+        emissiveIntensity={3} // Increased brightness
         toneMapped={false}
+      />
+      <pointLight
+        color={orb.color}
+        intensity={1.5}
+        distance={3}
+        decay={2}
       />
     </mesh>
   );
