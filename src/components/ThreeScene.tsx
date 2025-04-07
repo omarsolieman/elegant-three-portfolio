@@ -132,7 +132,7 @@ interface Particle {
 }
 
 function BackgroundParticles({ count = 500 }) {
-  const mesh = useRef<THREE.Group>();
+  const meshRef = useRef<THREE.Group>(null);
   const { viewport } = useThree();
   
   const [particles, setParticles] = useState<Particle[]>([]);
@@ -153,23 +153,25 @@ function BackgroundParticles({ count = 500 }) {
   }, [count, viewport]);
 
   useFrame((state) => {
-    if (mesh.current) {
-      mesh.current.children.forEach((child, i) => {
-        // More noticeable floating motion
-        child.position.y += Math.sin(state.clock.elapsedTime * 0.5 + i) * 0.004;
-        child.position.x += Math.cos(state.clock.elapsedTime * 0.3 + i * 0.5) * 0.004;
-        
-        // Faster orbital rotation for more visible movement
-        const angle = state.clock.elapsedTime * particles[i].speed * 0.1;
-        const radius = Math.sqrt(Math.pow(particles[i].position[0], 2) + Math.pow(particles[i].position[1], 2));
-        child.position.x = Math.sin(angle) * radius * 0.3 + particles[i].position[0] * 0.7;
-        child.position.z = Math.cos(angle) * radius * 0.3 + particles[i].position[2] * 0.7;
+    if (meshRef.current) {
+      meshRef.current.children.forEach((child, i) => {
+        if (i < particles.length) {
+          // More noticeable floating motion
+          child.position.y += Math.sin(state.clock.elapsedTime * 0.5 + i) * 0.004;
+          child.position.x += Math.cos(state.clock.elapsedTime * 0.3 + i * 0.5) * 0.004;
+          
+          // Faster orbital rotation for more visible movement
+          const angle = state.clock.elapsedTime * particles[i].speed * 0.1;
+          const radius = Math.sqrt(Math.pow(particles[i].position[0], 2) + Math.pow(particles[i].position[1], 2));
+          child.position.x = Math.sin(angle) * radius * 0.3 + particles[i].position[0] * 0.7;
+          child.position.z = Math.cos(angle) * radius * 0.3 + particles[i].position[2] * 0.7;
+        }
       });
     }
   });
 
   return (
-    <group ref={mesh}>
+    <group ref={meshRef}>
       {particles.map((particle, i) => (
         <mesh key={i} position={particle.position}>
           <sphereGeometry args={[0.03, 8, 8]} />
@@ -181,7 +183,7 @@ function BackgroundParticles({ count = 500 }) {
 }
 
 function ShootingStar() {
-  const ref = useRef();
+  const ref = useRef<THREE.Mesh>(null);
   const [active, setActive] = useState(false);
   const [position, setPosition] = useState<[number, number, number]>([0, 0, 0]);
   const [direction, setDirection] = useState<[number, number, number]>([0, 0, 0]);
@@ -279,27 +281,27 @@ function GlowingOrbs() {
 
 // Individual orb with custom motion path
 function OrbWithMotion({ orb }: { orb: Orb }) {
-  const mesh = useRef<THREE.Mesh>();
+  const meshRef = useRef<THREE.Mesh>(null);
   const initialPosition = useRef<[number, number, number]>(orb.position);
   
   useFrame((state) => {
-    if (mesh.current) {
+    if (meshRef.current) {
       // Create a more dramatic orbital motion
       const time = state.clock.elapsedTime;
       const x = initialPosition.current[0] + Math.sin(time * 0.4 * orb.speed + orb.phaseOffset) * orb.radius * 0.3;
       const y = initialPosition.current[1] + Math.cos(time * 0.3 * orb.speed + orb.phaseOffset) * orb.radius * 0.25;
       const z = initialPosition.current[2] + Math.sin(time * 0.5 * orb.speed + orb.phaseOffset) * orb.radius * 0.2;
       
-      mesh.current.position.set(x, y, z);
+      meshRef.current.position.set(x, y, z);
       
       // More dramatic pulse effect
       const pulse = 1 + Math.sin(time * orb.speed * 0.8) * 0.15;
-      mesh.current.scale.set(orb.scale * pulse, orb.scale * pulse, orb.scale * pulse);
+      meshRef.current.scale.set(orb.scale * pulse, orb.scale * pulse, orb.scale * pulse);
     }
   });
 
   return (
-    <mesh ref={mesh} position={orb.position} scale={orb.scale}>
+    <mesh ref={meshRef} position={orb.position} scale={orb.scale}>
       <sphereGeometry args={[1, 16, 16]} />
       <meshStandardMaterial 
         color={orb.color} 
