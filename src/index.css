@@ -176,8 +176,6 @@
     -webkit-mask-composite: xor;
     mask-composite: exclude;
   }
-  
-  /* Removed the problematic shooting-star animation */
 }
 
 /* Custom scroll bar */
@@ -251,7 +249,7 @@
   transform: translateX(100%);
 }
 
-/* Particle animation */
+/* Particle animation - Fixed version */
 @keyframes particle-move {
   0% {
     transform: translate(0, 0);
@@ -261,7 +259,6 @@
     opacity: 0.7;
   }
   100% {
-    transform: translate(var(--x), var(--y));
     opacity: 0;
   }
 }
@@ -271,6 +268,22 @@
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.5);
   animation: particle-move 3s forwards;
+}
+
+/* Apply the particle movement with the data attributes */
+.particle {
+  animation-name: particle-move;
+}
+
+/* Make sure each particle grabs its data attributes for transforms */
+.particle::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translate(
+    attr(data-x-move px, 0px),
+    attr(data-y-move px, 0px)
+  );
 }
 
 /* Interactive card effects */

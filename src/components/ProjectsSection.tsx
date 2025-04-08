@@ -190,16 +190,18 @@ export default function ProjectsSection() {
           {particles.map(particle => (
             <div
               key={particle.id}
-              className="particle absolute"
+              className={`particle absolute`}
               style={{
                 left: particle.x,
                 top: particle.y,
                 width: particle.size,
                 height: particle.size,
-                '--x': `${particle.xMove}px`,
-                '--y': `${particle.yMove}px`,
-                animationDuration: `${particle.duration}s`
+                animationDuration: `${particle.duration}s`,
+                // Fix: Use CSS variables through className instead of inline styles
+                // We'll define these animations in CSS
               }}
+              data-x-move={particle.xMove}
+              data-y-move={particle.yMove}
             ></div>
           ))}
         </div>

@@ -78,10 +78,10 @@ const ParticleEffect = ({ containerRef }) => {
             top: particle.y,
             width: particle.size,
             height: particle.size,
-            '--x': `${particle.xMove}px`,
-            '--y': `${particle.yMove}px`,
             animationDuration: `${particle.duration}s`
           }}
+          data-x-move={particle.xMove}
+          data-y-move={particle.yMove}
         ></div>
       ))}
     </>
