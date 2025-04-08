@@ -27,10 +27,10 @@ export default function CodeShootingStars() {
     
     // Periodically add new stars
     const interval = setInterval(() => {
-      if (stars.length < 5) { // Keep max 5 stars at any time
+      if (stars.length < 3) { // Reduced from 5 to 3 max stars
         addNewStar();
       }
-    }, 4000);
+    }, 6000); // Increased interval from 4000ms to 6000ms
     
     return () => clearInterval(interval);
   }, []);
@@ -38,7 +38,7 @@ export default function CodeShootingStars() {
   const createInitialStars = () => {
     const initialStars: CodeStar[] = [];
     
-    for (let i = 0; i < 3; i++) { // Start with 3 stars
+    for (let i = 0; i < 2; i++) { // Reduced from 3 to 2 initial stars
       initialStars.push(createStar(i));
     }
     
@@ -49,17 +49,17 @@ export default function CodeShootingStars() {
     return {
       id,
       text: codeFragments[Math.floor(Math.random() * codeFragments.length)],
-      duration: 7 + Math.random() * 6, // 7-13 seconds
-      delay: Math.random() * 2, // 0-2 second delay
+      duration: 9 + Math.random() * 6, // Increased from 7-13 to 9-15 seconds
+      delay: Math.random() * 3, // Increased from 0-2 to 0-3 second delay
       left: `${Math.random() * 70}%`, // Random horizontal position
-      opacity: 0.1 + Math.random() * 0.2 // Random opacity
+      opacity: 0.05 + Math.random() * 0.1 // Reduced opacity from 0.1-0.3 to 0.05-0.15
     };
   };
   
   const addNewStar = () => {
     setStars(prevStars => {
-      // Remove oldest star if we have 5 already
-      const updatedStars = prevStars.length >= 5 
+      // Remove oldest star if we have 3 already
+      const updatedStars = prevStars.length >= 3 
         ? [...prevStars.slice(1)] 
         : [...prevStars];
       

@@ -353,11 +353,11 @@
 .code-star {
   position: fixed;
   font-family: monospace;
-  font-size: 12px;
+  font-size: 10px;
   line-height: 1;
   white-space: nowrap;
-  color: rgba(255, 255, 255, 0.2);
-  transform: rotate(-30deg);
+  color: rgba(255, 255, 255, 0.15);
+  transform: rotate(-25deg);
   pointer-events: none;
   z-index: 0;
   opacity: 0;
@@ -366,17 +366,17 @@
 
 @keyframes code-star-move {
   0% {
-    transform: translateY(100vh) translateX(-100px) rotate(-30deg);
+    transform: translateY(100vh) translateX(-50px) rotate(-25deg);
     opacity: 0;
   }
   10% {
-    opacity: 0.4;
-  }
-  90% {
     opacity: 0.2;
   }
+  90% {
+    opacity: 0.1;
+  }
   100% {
-    transform: translateY(-100px) translateX(100vw) rotate(-30deg);
+    transform: translateY(-50px) translateX(70vw) rotate(-25deg);
     opacity: 0;
   }
 }
