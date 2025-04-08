@@ -37,9 +37,9 @@ export default function CodeWritingEffect() {
         text: codeSnippets[i],
         position: {
           x: Math.random() * 80 + 10, // 10-90% of width
-          y: Math.random() * 40 + 10, // Focus more on top half (10-50% of height)
+          y: Math.random() * 80 + 10, // 10-90% of height
         },
-        opacity: 0.3 + Math.random() * 0.2, // Increased to 0.3-0.5 opacity
+        opacity: 0.2 + Math.random() * 0.3, // 0.2-0.5 opacity
         duration: 8 + Math.random() * 7, // 8-15s duration
         delay: Math.random() * 10 // 0-10s delay
       });
@@ -54,9 +54,9 @@ export default function CodeWritingEffect() {
           ...snippet,
           position: {
             x: Math.random() * 80 + 10,
-            y: Math.random() * 40 + 10, // Keep focused on top half
+            y: Math.random() * 80 + 10
           },
-          opacity: 0.3 + Math.random() * 0.2, // Keep higher opacity
+          opacity: 0.2 + Math.random() * 0.3,
           duration: 8 + Math.random() * 7,
           delay: Math.random() * 3
         }))
@@ -69,7 +69,7 @@ export default function CodeWritingEffect() {
   return (
     <div 
       ref={containerRef}
-      className="fixed inset-0 pointer-events-none z-10"
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden"
       aria-hidden="true"
     >
       {snippets.map((snippet) => (
@@ -80,7 +80,7 @@ export default function CodeWritingEffect() {
             left: `${snippet.position.x}%`,
             top: `${snippet.position.y}%`,
             opacity: snippet.opacity,
-            color: 'rgba(255, 255, 255, 0.3)', // Increased from 0.15 to 0.3
+            color: 'rgba(255, 255, 255, 0.15)',
             transform: 'translateZ(0)',
             transition: `all ${snippet.duration}s ease-in-out ${snippet.delay}s`,
             whiteSpace: 'nowrap',

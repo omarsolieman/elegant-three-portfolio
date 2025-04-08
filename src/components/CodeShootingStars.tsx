@@ -30,10 +30,10 @@ export default function CodeShootingStars() {
       if (stars.length < 5) { // Keep max 5 stars at any time
         addNewStar();
       }
-    }, 3000); // Reduced from 4000ms to 3000ms for more frequent stars
+    }, 4000);
     
     return () => clearInterval(interval);
-  }, [stars.length]); // Added stars.length as dependency
+  }, []);
   
   const createInitialStars = () => {
     const initialStars: CodeStar[] = [];
@@ -50,9 +50,9 @@ export default function CodeShootingStars() {
       id,
       text: codeFragments[Math.floor(Math.random() * codeFragments.length)],
       duration: 7 + Math.random() * 6, // 7-13 seconds
-      delay: Math.random() * 1, // Reduced from 2s to 1s delay
+      delay: Math.random() * 2, // 0-2 second delay
       left: `${Math.random() * 70}%`, // Random horizontal position
-      opacity: 0.3 + Math.random() * 0.2 // Increased to 0.3-0.5 opacity
+      opacity: 0.1 + Math.random() * 0.2 // Random opacity
     };
   };
   
@@ -69,7 +69,7 @@ export default function CodeShootingStars() {
   };
   
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none z-10">
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
       {stars.map(star => (
         <div
           key={star.id}
