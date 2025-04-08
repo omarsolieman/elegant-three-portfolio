@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 import CodeWritingEffect from "@/components/CodeWritingEffect";
 import CodeShootingStars from "@/components/CodeShootingStars";
 import { ArrowDown, Sparkles } from "lucide-react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, Suspense } from "react";
 
 // Floating light component
 const FloatingLight = ({ size, delay, duration, left, top, opacity }) => {
@@ -93,8 +93,11 @@ const ParticleEffect = ({ containerRef }) => {
 const Index = () => {
   const [lights, setLights] = useState([]);
   const heroRef = useRef(null);
+  const [isClient, setIsClient] = useState(false);
   
   useEffect(() => {
+    setIsClient(true);
+    
     // Generate random floating lights
     const newLights = Array.from({ length: 20 }, (_, i) => ({
       id: i,
@@ -145,7 +148,11 @@ const Index = () => {
         className="relative min-h-screen flex items-center overflow-hidden"
         ref={heroRef}
       >
-        <ThreeScene className="absolute inset-0 z-0" />
+        {isClient && (
+          <Suspense fallback={<div className="absolute inset-0 bg-background" />}>
+            <ThreeScene className="absolute inset-0 z-0" />
+          </Suspense>
+        )}
         
         {/* Animated background lights */}
         <div className="absolute inset-0 z-0 bg-background">

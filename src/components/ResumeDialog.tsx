@@ -10,14 +10,17 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Download, ExternalLink, Building, GraduationCap, Briefcase, Code } from "lucide-react";
+import { useState } from "react";
 
 interface ResumeDialogProps {
   children: React.ReactNode;
 }
 
 export function ResumeDialog({ children }: ResumeDialogProps) {
+  const [open, setOpen] = useState(false);
+  
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
