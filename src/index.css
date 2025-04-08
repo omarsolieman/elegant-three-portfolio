@@ -180,7 +180,7 @@
     animation: typing 3s steps(40, end) infinite alternate;
     overflow: hidden;
     white-space: nowrap;
-    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    border-right: 2px solid rgba(255, 255, 255, 0.4);
     width: 0;
   }
   
@@ -356,27 +356,27 @@
   font-size: 12px;
   line-height: 1;
   white-space: nowrap;
-  color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.3);
   transform: rotate(-30deg);
   pointer-events: none;
-  z-index: 0;
+  z-index: 10;
   opacity: 0;
   animation: code-star-move 10s linear forwards;
 }
 
 @keyframes code-star-move {
   0% {
-    transform: translateY(100vh) translateX(-100px) rotate(-30deg);
+    transform: translateY(0) translateX(-100px) rotate(-30deg);
     opacity: 0;
   }
   10% {
-    opacity: 0.4;
+    opacity: 0.6;
   }
   90% {
-    opacity: 0.2;
+    opacity: 0.4;
   }
   100% {
-    transform: translateY(-100px) translateX(100vw) rotate(-30deg);
+    transform: translateY(100vh) translateX(100vw) rotate(-30deg);
     opacity: 0;
   }
 }
