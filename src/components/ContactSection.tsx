@@ -93,8 +93,19 @@ export default function ContactSection() {
                 <div className="p-3 bg-secondary/50 rounded-full magic-border">
                   <Mail className="w-5 h-5 text-primary/70" />
                 </div>
-                <a href="mailto:hello@example.com" className="text-primary/90 hover:text-primary transition-colors">
-                  hello@example.com
+                <a href="mailto:omarsoliemanwork@gmail.com" className="text-primary/90 hover:text-primary transition-colors">
+                  omarsoliemanwork@gmail.com
+                </a>
+              </div>
+              
+              <div className="flex items-center gap-3 mb-5 group hover-lift hover-glow">
+                <div className="p-3 bg-secondary/50 rounded-full magic-border">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-primary/70">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                  </svg>
+                </div>
+                <a href="tel:+60142345515" className="text-primary/90 hover:text-primary transition-colors">
+                  +60 14-234 5515
                 </a>
               </div>
             </div>
@@ -103,13 +114,15 @@ export default function ContactSection() {
               <h3 className="text-xl font-display font-semibold mb-4">Connect With Me</h3>
               <div className="flex gap-4">
                 {[
-                  { icon: Github, label: "GitHub" },
-                  { icon: Linkedin, label: "LinkedIn" },
-                  { icon: Twitter, label: "Twitter" }
+                  { icon: Github, label: "GitHub", url: "https://github.com" },
+                  { icon: Linkedin, label: "LinkedIn", url: "https://linkedin.com" },
+                  { icon: Twitter, label: "Twitter", url: "https://twitter.com" }
                 ].map((item, i) => (
                   <a 
                     key={i}
-                    href="#" 
+                    href={item.url} 
+                    target="_blank"
+                    rel="noreferrer"
                     className="p-4 bg-secondary/50 rounded-full moving-border hover:bg-primary/10 transition-colors hover:scale-110 transform duration-300"
                     aria-label={item.label}
                     onMouseEnter={() => setIsHovered(i)}

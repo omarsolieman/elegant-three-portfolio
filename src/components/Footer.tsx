@@ -51,18 +51,20 @@ export default function Footer() {
         
         <div className="flex flex-col md:flex-row justify-between items-center border-t border-secondary pt-8 magic-border">
           <p className="text-sm text-muted-foreground mb-4 md:mb-0 flex items-center">
-            © {currentYear} Your Name. Made with <Heart className="w-4 h-4 mx-1 text-red-500" /> and <Coffee className="w-4 h-4 mx-1" />
+            © {currentYear} Omar Medhat. Made with <Heart className="w-4 h-4 mx-1 text-red-500" /> and <Coffee className="w-4 h-4 mx-1" />
           </p>
           
           <div className="flex space-x-4">
             {[
-              { icon: Github, label: "GitHub" },
-              { icon: Linkedin, label: "LinkedIn" },
-              { icon: Twitter, label: "Twitter" }
+              { icon: Github, label: "GitHub", url: "https://github.com" },
+              { icon: Linkedin, label: "LinkedIn", url: "https://linkedin.com" },
+              { icon: Twitter, label: "Twitter", url: "https://twitter.com" }
             ].map((item, i) => (
               <a 
                 key={i}
-                href="#" 
+                href={item.url}
+                target="_blank"
+                rel="noreferrer" 
                 className="text-muted-foreground hover:text-primary transition-colors p-2 hover:bg-secondary/50 rounded-full hover-glow"
                 aria-label={item.label}
                 onMouseEnter={() => setHovered(i)}
