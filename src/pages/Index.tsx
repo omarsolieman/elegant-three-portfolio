@@ -6,6 +6,8 @@ import ProjectsSection from "@/components/ProjectsSection";
 import ArchiveSection from "@/components/ArchiveSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
+import CodeWritingEffect from "@/components/CodeWritingEffect";
+import CodeShootingStars from "@/components/CodeShootingStars";
 import { ArrowDown, Sparkles } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 
@@ -121,6 +123,10 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
+      
+      {/* Add the subtle background code effects */}
+      <CodeWritingEffect />
+      <CodeShootingStars />
       
       {/* Custom cursor glow effect */}
       <div 
