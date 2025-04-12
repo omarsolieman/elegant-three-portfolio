@@ -1,9 +1,11 @@
-import { useRef, useState, useEffect } from 'react';
+
+import { useRef, useState, useEffect, Suspense } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, useGLTF, Environment, Float, Text, Text3D, Stars } from '@react-three/drei';
 import { Vector3, Euler, MathUtils, Group, Mesh } from 'three';
 import * as THREE from 'three';
 import { useIsMobile } from '@/hooks/use-mobile';
+import ErrorBoundary from './ErrorBoundary';
 
 const YOUR_NAME = "Omar Medhat";
 
@@ -102,13 +104,19 @@ function FloatingName() {
   const [fontError, setFontError] = useState(false);
   
   useEffect(() => {
-    const font = new FontFace('SpaceGrotesk', 'url(/fonts/SpaceGrotesk-Bold.ttf)');
-    font.load().then(() => {
-      setFontLoaded(true);
-    }).catch(err => {
-      console.error("Error loading font:", err);
+    // Simplify font loading and add proper error handling
+    try {
+      const font = new FontFace('SpaceGrotesk', 'url(/fonts/SpaceGrotesk-Bold.ttf)');
+      font.load().then(() => {
+        setFontLoaded(true);
+      }).catch(err => {
+        console.error("Error loading font:", err);
+        setFontError(true);
+      });
+    } catch (error) {
+      console.error("Error in font loading setup:", error);
       setFontError(true);
-    });
+    }
   }, []);
 
   return (
@@ -132,17 +140,22 @@ function FloatingName() {
 }
 
 function StarField() {
-  return (
-    <Stars 
-      radius={100} 
-      depth={50} 
-      count={5000} 
-      factor={4} 
-      saturation={0.5} 
-      fade 
-      speed={1} 
-    />
-  );
+  try {
+    return (
+      <Stars 
+        radius={100} 
+        depth={50} 
+        count={5000} 
+        factor={4} 
+        saturation={0.5} 
+        fade 
+        speed={1} 
+      />
+    );
+  } catch (error) {
+    console.error("Error rendering StarField:", error);
+    return null;
+  }
 }
 
 interface Particle {
@@ -159,43 +172,51 @@ function BackgroundParticles({ count = 500 }) {
   const [particles, setParticles] = useState<Particle[]>([]);
   
   useEffect(() => {
-    const newParticles: Particle[] = [];
-    for (let i = 0; i < count; i++) {
-      newParticles.push({
-        position: [
-          (Math.random() - 0.5) * viewport.width * 3,
-          (Math.random() - 0.5) * viewport.height * 3,
-          (Math.random() - 0.5) * 10
-        ],
-        speed: Math.random() * 0.15 + 0.05,
-        size: Math.random() * 0.05 + 0.03,
-        amplitude: Math.random() * 1.5 + 0.5
-      });
+    try {
+      const newParticles: Particle[] = [];
+      for (let i = 0; i < count; i++) {
+        newParticles.push({
+          position: [
+            (Math.random() - 0.5) * viewport.width * 3,
+            (Math.random() - 0.5) * viewport.height * 3,
+            (Math.random() - 0.5) * 10
+          ],
+          speed: Math.random() * 0.15 + 0.05,
+          size: Math.random() * 0.05 + 0.03,
+          amplitude: Math.random() * 1.5 + 0.5
+        });
+      }
+      setParticles(newParticles);
+    } catch (error) {
+      console.error("Error creating background particles:", error);
     }
-    setParticles(newParticles);
   }, [count, viewport]);
 
   useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.children.forEach((child, i) => {
-        if (i < particles.length) {
-          const time = state.clock.elapsedTime;
-          child.position.y += Math.sin(time * 0.8 + i) * 0.012 * particles[i].amplitude;
-          child.position.x += Math.cos(time * 0.5 + i * 0.5) * 0.015 * particles[i].amplitude;
-          
-          const angle = time * particles[i].speed * 0.2;
-          const radius = Math.sqrt(Math.pow(particles[i].position[0], 2) + Math.pow(particles[i].position[1], 2));
-          child.position.x = Math.sin(angle) * radius * 0.4 + particles[i].position[0] * 0.6;
-          child.position.z = Math.cos(angle) * radius * 0.4 + particles[i].position[2] * 0.6;
-          
-          const pulse = 1 + Math.sin(time * 0.5 + i) * 0.3;
-          child.scale.set(
-            particles[i].size * pulse,
-            particles[i].size * pulse,
-            particles[i].size * pulse
-          );
-        }
-      });
+    try {
+      if (meshRef.current) {
+        meshRef.current.children.forEach((child, i) => {
+          if (i < particles.length) {
+            const time = state.clock.elapsedTime;
+            child.position.y += Math.sin(time * 0.8 + i) * 0.012 * particles[i].amplitude;
+            child.position.x += Math.cos(time * 0.5 + i * 0.5) * 0.015 * particles[i].amplitude;
+            
+            const angle = time * particles[i].speed * 0.2;
+            const radius = Math.sqrt(Math.pow(particles[i].position[0], 2) + Math.pow(particles[i].position[1], 2));
+            child.position.x = Math.sin(angle) * radius * 0.4 + particles[i].position[0] * 0.6;
+            child.position.z = Math.cos(angle) * radius * 0.4 + particles[i].position[2] * 0.6;
+            
+            const pulse = 1 + Math.sin(time * 0.5 + i) * 0.3;
+            child.scale.set(
+              particles[i].size * pulse,
+              particles[i].size * pulse,
+              particles[i].size * pulse
+            );
+          }
+        });
+      }
+    } catch (error) {
+      console.error("Error animating background particles:", error);
     }
   });
 
@@ -208,25 +229,7 @@ function BackgroundParticles({ count = 500 }) {
             color="#ffffff" 
             transparent 
             opacity={0.9}
-          >
-            <primitive attach="onBeforeCompile" object={(shader) => {
-              shader.fragmentShader = shader.fragmentShader.replace(
-                '#include <output_fragment>',
-                `
-                vec3 outgoingLight = diffuseColor.rgb;
-                gl_FragColor = vec4(outgoingLight, diffuseColor.a);
-                gl_FragColor.rgb += vec3(0.1, 0.1, 0.1) * (0.5 + 0.5 * sin(vUv.x * 10.0 + vUv.y * 15.0 + time * 5.0));
-                `
-              );
-              shader.uniforms.time = { value: 0 };
-              function updateTime(renderer) {
-                shader.uniforms.time.value = performance.now() / 1000;
-              }
-              if (meshRef.current) {
-                meshRef.current.onBeforeRender = updateTime;
-              }
-            }} />
-          </meshBasicMaterial>
+          />
         </mesh>
       ))}
     </group>
@@ -240,32 +243,41 @@ function ShootingStar() {
   const [direction, setDirection] = useState<[number, number, number]>([0, 0, 0]);
   
   useEffect(() => {
-    const timer = setInterval(() => {
-      if (Math.random() > 0.7) {
-        const x = (Math.random() - 0.5) * 20;
-        const y = (Math.random() - 0.5) * 20;
-        const z = -10;
-        
-        const dx = (Math.random() - 0.5) * 0.2;
-        const dy = -0.1 - Math.random() * 0.1;
-        const dz = 0;
-        
-        setPosition([x, y, z]);
-        setDirection([dx, dy, dz]);
-        setActive(true);
-        
-        setTimeout(() => setActive(false), 1500);
-      }
-    }, 2000);
-    
-    return () => clearInterval(timer);
+    try {
+      const timer = setInterval(() => {
+        if (Math.random() > 0.7) {
+          const x = (Math.random() - 0.5) * 20;
+          const y = (Math.random() - 0.5) * 20;
+          const z = -10;
+          
+          const dx = (Math.random() - 0.5) * 0.2;
+          const dy = -0.1 - Math.random() * 0.1;
+          const dz = 0;
+          
+          setPosition([x, y, z]);
+          setDirection([dx, dy, dz]);
+          setActive(true);
+          
+          setTimeout(() => setActive(false), 1500);
+        }
+      }, 2000);
+      
+      return () => clearInterval(timer);
+    } catch (error) {
+      console.error("Error in ShootingStar effect:", error);
+      return () => {}; // Return empty cleanup function
+    }
   }, []);
   
   useFrame(() => {
-    if (ref.current && active) {
-      ref.current.position.x += direction[0];
-      ref.current.position.y += direction[1];
-      ref.current.position.z += direction[2];
+    try {
+      if (ref.current && active) {
+        ref.current.position.x += direction[0];
+        ref.current.position.y += direction[1];
+        ref.current.position.z += direction[2];
+      }
+    } catch (error) {
+      console.error("Error updating ShootingStar position:", error);
     }
   });
   
@@ -297,27 +309,31 @@ function GlowingOrbs() {
   const [orbs, setOrbs] = useState<Orb[]>([]);
   
   useEffect(() => {
-    const newOrbs: Orb[] = [];
-    for (let i = 0; i < 12; i++) {
-      const x = (Math.random() - 0.5) * 12;
-      const y = (Math.random() - 0.5) * 12;
-      const z = (Math.random() - 0.5) * 5 - 3;
-      const color = colors[Math.floor(Math.random() * colors.length)];
-      const scale = 0.1 + Math.random() * 0.3;
-      const speed = 0.8 + Math.random() * 2.0;
-      const radius = 1.5 + Math.random() * 4;
-      const phaseOffset = Math.random() * Math.PI * 2;
-      
-      newOrbs.push({ 
-        position: [x, y, z], 
-        color, 
-        scale, 
-        speed, 
-        radius, 
-        phaseOffset 
-      });
+    try {
+      const newOrbs: Orb[] = [];
+      for (let i = 0; i < 12; i++) {
+        const x = (Math.random() - 0.5) * 12;
+        const y = (Math.random() - 0.5) * 12;
+        const z = (Math.random() - 0.5) * 5 - 3;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const scale = 0.1 + Math.random() * 0.3;
+        const speed = 0.8 + Math.random() * 2.0;
+        const radius = 1.5 + Math.random() * 4;
+        const phaseOffset = Math.random() * Math.PI * 2;
+        
+        newOrbs.push({ 
+          position: [x, y, z], 
+          color, 
+          scale, 
+          speed, 
+          radius, 
+          phaseOffset 
+        });
+      }
+      setOrbs(newOrbs);
+    } catch (error) {
+      console.error("Error creating glowing orbs:", error);
     }
-    setOrbs(newOrbs);
   }, []);
   
   return (
@@ -334,19 +350,23 @@ function OrbWithMotion({ orb }: { orb: Orb }) {
   const initialPosition = useRef<[number, number, number]>(orb.position);
   
   useFrame((state) => {
-    if (meshRef.current) {
-      const time = state.clock.elapsedTime;
-      const x = initialPosition.current[0] + Math.sin(time * 0.6 * orb.speed + orb.phaseOffset) * orb.radius * 0.4;
-      const y = initialPosition.current[1] + Math.cos(time * 0.5 * orb.speed + orb.phaseOffset) * orb.radius * 0.35;
-      const z = initialPosition.current[2] + Math.sin(time * 0.7 * orb.speed + orb.phaseOffset) * orb.radius * 0.3;
-      
-      meshRef.current.position.set(x, y, z);
-      
-      const pulse = 1 + Math.sin(time * orb.speed) * 0.3;
-      meshRef.current.scale.set(orb.scale * pulse, orb.scale * pulse, orb.scale * pulse);
-      
-      meshRef.current.rotation.x += 0.001 * orb.speed;
-      meshRef.current.rotation.y += 0.001 * orb.speed;
+    try {
+      if (meshRef.current) {
+        const time = state.clock.elapsedTime;
+        const x = initialPosition.current[0] + Math.sin(time * 0.6 * orb.speed + orb.phaseOffset) * orb.radius * 0.4;
+        const y = initialPosition.current[1] + Math.cos(time * 0.5 * orb.speed + orb.phaseOffset) * orb.radius * 0.35;
+        const z = initialPosition.current[2] + Math.sin(time * 0.7 * orb.speed + orb.phaseOffset) * orb.radius * 0.3;
+        
+        meshRef.current.position.set(x, y, z);
+        
+        const pulse = 1 + Math.sin(time * orb.speed) * 0.3;
+        meshRef.current.scale.set(orb.scale * pulse, orb.scale * pulse, orb.scale * pulse);
+        
+        meshRef.current.rotation.x += 0.001 * orb.speed;
+        meshRef.current.rotation.y += 0.001 * orb.speed;
+      }
+    } catch (error) {
+      console.error("Error animating orb:", error);
     }
   });
 
@@ -374,92 +394,159 @@ export function SceneContent() {
   const [sceneLoaded, setSceneLoaded] = useState(false);
 
   useEffect(() => {
-    setSceneLoaded(true);
-    console.log("Three.js scene content loaded");
+    try {
+      setSceneLoaded(true);
+      console.log("Three.js scene content loaded");
+    } catch (error) {
+      console.error("Error in SceneContent:", error);
+    }
   }, []);
 
-  const handleHover = (index) => setHovered(index === hovered ? null : index);
+  const handleHover = (index) => {
+    try {
+      setHovered(index === hovered ? null : index);
+    } catch (error) {
+      console.error("Error in handleHover:", error);
+    }
+  };
 
   return (
-    <>
+    <ErrorBoundary>
       <CameraController />
       <ambientLight intensity={0.3} />
       <spotLight position={[5, 5, 5]} intensity={0.8} castShadow />
       <StarField />
-      <BackgroundParticles count={750} />
-      <GlowingOrbs />
-      <ShootingStar />
-      <ShootingStar />
+      <ErrorBoundary>
+        <BackgroundParticles count={750} />
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <GlowingOrbs />
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <ShootingStar />
+        <ShootingStar />
+      </ErrorBoundary>
       
-      <Float speed={2} rotationIntensity={0.4} floatIntensity={0.8}>
-        <CubeModel 
-          position={[-2, 0, 0]} 
-          rotation={[0.5, 0.5, 0]} 
-          scale={1} 
-          color="#ff49db"
-          hovered={hovered === 0}
-          onClick={() => handleHover(0)}
-        />
-      </Float>
+      <ErrorBoundary>
+        <Float speed={2} rotationIntensity={0.4} floatIntensity={0.8}>
+          <CubeModel 
+            position={[-2, 0, 0]} 
+            rotation={[0.5, 0.5, 0]} 
+            scale={1} 
+            color="#ff49db"
+            hovered={hovered === 0}
+            onClick={() => handleHover(0)}
+          />
+        </Float>
+      </ErrorBoundary>
       
-      <Float speed={1.8} rotationIntensity={0.3} floatIntensity={0.6}>
-        <SphereModel 
-          position={[0, 0, 0]} 
-          scale={1} 
-          color="#0095ff"
-          hovered={hovered === 1}
-          onClick={() => handleHover(1)}
-        />
-      </Float>
+      <ErrorBoundary>
+        <Float speed={1.8} rotationIntensity={0.3} floatIntensity={0.6}>
+          <SphereModel 
+            position={[0, 0, 0]} 
+            scale={1} 
+            color="#0095ff"
+            hovered={hovered === 1}
+            onClick={() => handleHover(1)}
+          />
+        </Float>
+      </ErrorBoundary>
       
-      <Float speed={2.2} rotationIntensity={0.5} floatIntensity={0.7}>
-        <TorusModel 
-          position={[2, 0, 0]} 
-          rotation={[0.5, 0.5, 0]} 
-          scale={1} 
-          color="#00e676"
-          hovered={hovered === 2}
-          onClick={() => handleHover(2)}
-        />
-      </Float>
+      <ErrorBoundary>
+        <Float speed={2.2} rotationIntensity={0.5} floatIntensity={0.7}>
+          <TorusModel 
+            position={[2, 0, 0]} 
+            rotation={[0.5, 0.5, 0]} 
+            scale={1} 
+            color="#00e676"
+            hovered={hovered === 2}
+            onClick={() => handleHover(2)}
+          />
+        </Float>
+      </ErrorBoundary>
       
-      <FloatingName />
+      <ErrorBoundary>
+        <FloatingName />
+      </ErrorBoundary>
       <Environment preset="city" />
-    </>
+    </ErrorBoundary>
   );
 }
 
 export default function ThreeScene({ className = "" }) {
   const [hasRendered, setHasRendered] = useState(false);
+  const [hasError, setHasError] = useState(false);
   
   useEffect(() => {
-    setHasRendered(true);
-    console.log("ThreeScene component mounted");
+    try {
+      setHasRendered(true);
+      console.log("ThreeScene component mounted");
+      
+      // Check for WebGL compatibility
+      if (typeof window !== 'undefined') {
+        const canvas = document.createElement('canvas');
+        let gl;
+        try {
+          gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        } catch (e) {
+          console.error("WebGL context error:", e);
+        }
+        
+        if (!gl) {
+          console.error("WebGL is not supported in this browser");
+          setHasError(true);
+        }
+      }
+    } catch (error) {
+      console.error("Error in ThreeScene initialization:", error);
+      setHasError(true);
+    }
   }, []);
 
-  if (typeof window !== 'undefined') {
-    if (!window.WebGLRenderingContext) {
-      console.error("WebGL is not supported in this browser");
-      return <div className={`w-full h-[80vh] ${className} bg-background flex items-center justify-center`}>
+  const handleError = (error) => {
+    console.error("Caught error in ThreeScene:", error);
+    setHasError(true);
+  };
+
+  if (hasError) {
+    return (
+      <div className={`w-full h-[80vh] ${className} bg-background flex items-center justify-center`}>
+        <p className="text-primary">Could not initialize 3D scene. Please check console for details.</p>
+      </div>
+    );
+  }
+
+  if (typeof window !== 'undefined' && !window.WebGLRenderingContext) {
+    return (
+      <div className={`w-full h-[80vh] ${className} bg-background flex items-center justify-center`}>
         <p className="text-primary">WebGL is not supported in your browser</p>
-      </div>;
-    }
+      </div>
+    );
   }
 
   return (
-    <div className={`w-full h-[80vh] ${className}`}>
-      <Canvas 
-        shadows 
-        dpr={[1, 2]}
-        onCreated={(state) => {
-          console.log("Canvas created successfully");
-        }}
-        onError={(error) => {
-          console.error("Canvas error:", error);
-        }}
-      >
-        <SceneContent />
-      </Canvas>
-    </div>
+    <ErrorBoundary onError={handleError}>
+      <div className={`w-full h-[80vh] ${className}`}>
+        <Suspense fallback={
+          <div className="w-full h-full bg-background flex items-center justify-center">
+            <p className="text-primary">Loading 3D scene...</p>
+          </div>
+        }>
+          <Canvas 
+            shadows 
+            dpr={[1, 2]}
+            onCreated={(state) => {
+              console.log("Canvas created successfully");
+            }}
+            onError={(error) => {
+              console.error("Canvas error:", error);
+              setHasError(true);
+            }}
+          >
+            <SceneContent />
+          </Canvas>
+        </Suspense>
+      </div>
+    </ErrorBoundary>
   );
 }

@@ -18,16 +18,24 @@ const FloatingLight: React.FC<FloatingLightProps> = ({
   top, 
   opacity 
 }) => {
+  // Ensure all values are valid to prevent NaN errors
+  const safeSize = isNaN(size) ? 50 : size;
+  const safeDelay = isNaN(delay) ? 0 : delay;
+  const safeDuration = isNaN(duration) ? 5 : duration;
+  const safeOpacity = isNaN(opacity) ? 0.5 : opacity;
+  const safeLeft = left || '50%';
+  const safeTop = top || '50%';
+
   return (
     <div 
       className="absolute rounded-full bg-white blur-xl"
       style={{
-        width: size,
-        height: size,
-        left: left,
-        top: top,
-        opacity: opacity,
-        animation: `float ${duration}s ease-in-out ${delay}s infinite`
+        width: safeSize,
+        height: safeSize,
+        left: safeLeft,
+        top: safeTop,
+        opacity: safeOpacity,
+        animation: `float ${safeDuration}s ease-in-out ${safeDelay}s infinite`
       }}
     ></div>
   );
