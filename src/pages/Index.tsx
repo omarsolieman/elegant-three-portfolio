@@ -1,4 +1,3 @@
-
 import ThreeScene from "@/components/ThreeScene";
 import Navbar from "@/components/Navbar";
 import AboutSection from "@/components/AboutSection";
@@ -11,7 +10,6 @@ import CodeShootingStars from "@/components/CodeShootingStars";
 import { ArrowDown, Sparkles } from "lucide-react";
 import { useEffect, useState, useRef, Suspense } from "react";
 
-// Floating light component
 const FloatingLight = ({ size, delay, duration, left, top, opacity }) => {
   return (
     <div 
@@ -28,7 +26,6 @@ const FloatingLight = ({ size, delay, duration, left, top, opacity }) => {
   );
 };
 
-// Particle effect component
 const ParticleEffect = ({ containerRef }) => {
   const [particles, setParticles] = useState([]);
   
@@ -94,11 +91,11 @@ const Index = () => {
   const [lights, setLights] = useState([]);
   const heroRef = useRef(null);
   const [isClient, setIsClient] = useState(false);
+  const [threeJsError, setThreeJsError] = useState(false);
   
   useEffect(() => {
     setIsClient(true);
     
-    // Generate random floating lights
     const newLights = Array.from({ length: 20 }, (_, i) => ({
       id: i,
       size: Math.random() * 100 + 30,
@@ -109,9 +106,10 @@ const Index = () => {
       opacity: Math.random() * 0.15 + 0.05
     }));
     setLights(newLights);
+
+    console.log("Index component initialized");
   }, []);
 
-  // Interactive cursor effect
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   
   useEffect(() => {
@@ -123,15 +121,18 @@ const Index = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  const handleThreeJsError = (error) => {
+    console.error("Error loading Three.js scene:", error);
+    setThreeJsError(true);
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
       
-      {/* Add the subtle background code effects */}
       <CodeWritingEffect />
       <CodeShootingStars />
       
-      {/* Custom cursor glow effect */}
       <div 
         className="fixed w-40 h-40 rounded-full bg-primary/10 pointer-events-none blur-3xl z-10"
         style={{
@@ -142,21 +143,26 @@ const Index = () => {
         }}
       ></div>
       
-      {/* Hero Section */}
       <section 
         id="home" 
         className="relative min-h-screen flex items-center overflow-hidden"
         ref={heroRef}
       >
-        {isClient && (
-          <Suspense fallback={<div className="absolute inset-0 bg-background" />}>
-            <ThreeScene className="absolute inset-0 z-0" />
+        {isClient && !threeJsError ? (
+          <Suspense fallback={<div className="absolute inset-0 bg-background flex items-center justify-center text-primary">Loading 3D scene...</div>}>
+            <ErrorBoundary onError={handleThreeJsError}>
+              <ThreeScene className="absolute inset-0 z-0" />
+            </ErrorBoundary>
           </Suspense>
+        ) : threeJsError ? (
+          <div className="absolute inset-0 bg-background flex items-center justify-center">
+            <p className="text-primary">Could not load 3D scene</p>
+          </div>
+        ) : (
+          <div className="absolute inset-0 bg-background" />
         )}
         
-        {/* Animated background lights */}
         <div className="absolute inset-0 z-0 bg-background">
-          {/* Floating lights */}
           {lights.map((light) => (
             <FloatingLight 
               key={light.id}
@@ -169,12 +175,10 @@ const Index = () => {
             />
           ))}
           
-          {/* Fixed position glowing orbs */}
           <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-primary/10 rounded-full blur-3xl animate-pulse-glow"></div>
           <div className="absolute top-1/4 -right-20 w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: "1s" }}></div>
           <div className="absolute top-3/4 left-1/3 w-40 h-40 bg-primary/5 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: "2s" }}></div>
           
-          {/* Mouse move particle effect */}
           <ParticleEffect containerRef={heroRef} />
         </div>
         
@@ -205,27 +209,44 @@ const Index = () => {
         </div>
       </section>
       
-      {/* About Section */}
       <AboutSection />
       
-      {/* Projects Section */}
       <ProjectsSection />
       
-      {/* Archive Section */}
       <ArchiveSection />
       
-      {/* Contact Section */}
       <ContactSection />
       
-      {/* Footer */}
       <Footer />
 
-      {/* Decorative Elements */}
       <div className="fixed -bottom-40 -left-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-pulse-glow"></div>
       <div className="fixed -top-20 -right-20 w-60 h-60 bg-primary/5 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: "1.5s" }}></div>
       <div className="fixed top-1/3 -left-20 w-40 h-40 bg-primary/5 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: "3s" }}></div>
     </div>
   );
 };
+
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    this.props.onError?.(error);
+    console.error("Error in ThreeScene:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return null;
+    }
+    return this.props.children;
+  }
+}
 
 export default Index;
