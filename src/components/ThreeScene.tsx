@@ -2,7 +2,6 @@
 import { useRef, useState, useEffect, Suspense } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, useGLTF, Environment, Float, Text, Text3D, Stars } from '@react-three/drei';
-import { Vector3, Euler, MathUtils, Group, Mesh } from 'three';
 import * as THREE from 'three';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ErrorBoundary from './ErrorBoundary';
@@ -10,7 +9,7 @@ import ErrorBoundary from './ErrorBoundary';
 const YOUR_NAME = "Omar Medhat";
 
 function CubeModel({ position, rotation, scale, color, hovered, onClick }) {
-  const mesh = useRef<Mesh>(null);
+  const mesh = useRef<THREE.Mesh>(null);
   
   useFrame((state) => {
     if (mesh.current) {
@@ -33,8 +32,9 @@ function CubeModel({ position, rotation, scale, color, hovered, onClick }) {
   );
 }
 
-function SphereModel({ position, scale, color, hovered, onClick }) {
-  const mesh = useRef<Mesh>(null);
+// Export SphereModel component so it can be imported elsewhere
+export function SphereModel({ position, scale, color, hovered, onClick }) {
+  const mesh = useRef<THREE.Mesh>(null);
   
   useFrame((state, delta) => {
     if (mesh.current) {
@@ -55,8 +55,9 @@ function SphereModel({ position, scale, color, hovered, onClick }) {
   );
 }
 
-function TorusModel({ position, rotation, scale, color, hovered, onClick }) {
-  const mesh = useRef<Mesh>(null);
+// Export TorusModel component so it can be imported elsewhere
+export function TorusModel({ position, rotation, scale, color, hovered, onClick }) {
+  const mesh = useRef<THREE.Mesh>(null);
   
   useFrame((state) => {
     if (mesh.current) {

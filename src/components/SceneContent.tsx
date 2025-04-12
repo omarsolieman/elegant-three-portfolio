@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
-import { Float, Stars, Environment } from '@react-three/drei';
+import { useState, useEffect, useRef } from 'react';
+import { Float, Stars, Environment, Text } from '@react-three/drei';
+import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import ErrorBoundary from './ErrorBoundary';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useThree } from '@react-three/fiber';
 import ModelViewer from './ModelViewer';
+import { SphereModel, TorusModel } from './ThreeScene';
 
 const YOUR_NAME = "Omar Medhat";
 
@@ -33,7 +34,6 @@ function FloatingName() {
   const [fontError, setFontError] = useState(false);
   
   useEffect(() => {
-    // Simplify font loading and add proper error handling
     try {
       const font = new FontFace('SpaceGrotesk', 'url(/fonts/SpaceGrotesk-Bold.ttf)');
       font.load().then(() => {
@@ -95,7 +95,7 @@ interface Particle {
 }
 
 function BackgroundParticles({ count = 500 }) {
-  const meshRef = useRef<Group>(null);
+  const meshRef = useRef<THREE.Group>(null);
   const { viewport } = useThree();
   
   const [particles, setParticles] = useState<Particle[]>([]);
@@ -166,7 +166,7 @@ function BackgroundParticles({ count = 500 }) {
 }
 
 function ShootingStar() {
-  const ref = useRef<Mesh>(null);
+  const ref = useRef<THREE.Mesh>(null);
   const [active, setActive] = useState(false);
   const [position, setPosition] = useState<[number, number, number]>([0, 0, 0]);
   const [direction, setDirection] = useState<[number, number, number]>([0, 0, 0]);
@@ -213,7 +213,7 @@ function ShootingStar() {
   if (!active) return null;
   
   return (
-    <mesh ref={ref} position={position as any}>
+    <mesh ref={ref} position={position}>
       <sphereGeometry args={[0.05, 8, 8]} />
       <meshBasicMaterial color="#ffffff" />
       <mesh position={[0, 0, -0.5]} scale={[1, 1, 10]}>
@@ -275,7 +275,7 @@ function GlowingOrbs() {
 }
 
 function OrbWithMotion({ orb }: { orb: Orb }) {
-  const meshRef = useRef<Mesh>(null);
+  const meshRef = useRef<THREE.Mesh>(null);
   const initialPosition = useRef<[number, number, number]>(orb.position);
   
   useFrame((state) => {
@@ -318,7 +318,6 @@ function OrbWithMotion({ orb }: { orb: Orb }) {
   );
 }
 
-import { Text } from '@react-three/drei';
 export function SceneContent() {
   const [hovered, setHovered] = useState(null);
   const [sceneLoaded, setSceneLoaded] = useState(false);
@@ -357,7 +356,6 @@ export function SceneContent() {
         <ShootingStar />
       </ErrorBoundary>
       
-      {/* Replace the cube with the GLB model */}
       <ErrorBoundary>
         <Float speed={2} rotationIntensity={0.4} floatIntensity={0.8}>
           <ModelViewer 
