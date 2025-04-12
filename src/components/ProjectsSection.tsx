@@ -1,9 +1,20 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera, Float } from '@react-three/drei';
+import { OrbitControls, PerspectiveCamera, Float, Environment } from '@react-three/drei';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
 import { ExternalLink, Github, ArrowUpRight, Sparkles, Mouse } from "lucide-react";
+import ModelViewer from '@/components/ModelViewer';
 
 function Project3DPreview({ modelType, hovered }) {
   const [rotating, setRotating] = useState(true);
@@ -108,6 +119,55 @@ function TiltCard({ children, className }) {
   );
 }
 
+// New component for the ModelViewer preview
+function ModelViewerPreview({ hovered }) {
+  const [rotating, setRotating] = useState(true);
+
+  // Adjust scale and camera position for the card context
+  const modelScale = 0.7; // Adjust as needed
+  const cameraPosition: [number, number, number] = [0, 2, 6]; // Increase Z distance to zoom out
+
+  return (
+    <div className="relative h-[220px] w-full overflow-hidden rounded-t-lg group">
+      <div 
+        className="absolute inset-0 bg-gradient-to-b from-black/0 to-black/40 z-10 opacity-0 group-hover:opacity-100 transition-opacity"
+      ></div>
+      <div className="absolute bottom-3 right-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="flex items-center justify-center gap-1 text-xs bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-full">
+          <Mouse className="w-3 h-3" /> <span>Interact</span>
+        </div>
+      </div>
+      <Canvas shadows camera={{ position: cameraPosition, fov: 45 }}>
+        <ambientLight intensity={0.6} />
+        <spotLight position={[5, 5, 5]} angle={0.2} penumbra={1} intensity={0.8} castShadow />
+        <Suspense fallback={null}>
+          <ModelViewer 
+            position={[0, -3.8, 0]} // Lower the model to compensate for internal offset
+            scale={modelScale} 
+          />
+          <OrbitControls 
+            enableZoom={false} 
+            autoRotate={rotating} 
+            autoRotateSpeed={hovered ? 4 : 2} 
+            target={[0, 0, 0]} // Target the model's assumed center (origin)
+            enablePan={false} // Disable panning for card preview
+          />
+          {/* Optional: Add a simple environment for reflections */}
+          {/* <Environment preset="apartment" /> */}
+        </Suspense>
+        {/* Stop rotation on click - optional */}
+        <mesh 
+          visible={false} // Invisible plane to catch clicks
+          onClick={() => setRotating(!rotating)} 
+        >
+          <planeGeometry args={[100, 100]} />
+          <meshBasicMaterial transparent opacity={0} />
+        </mesh>
+      </Canvas>
+    </div>
+  );
+}
+
 export default function ProjectsSection() {
   const [activeCard, setActiveCard] = useState(null);
   const sectionRef = useRef(null);
@@ -165,6 +225,14 @@ export default function ProjectsSection() {
       modelType: "torus",
       demoLink: "#",
       codeLink: "#"
+    },
+    {
+      title: "GLB Model Showcase",
+      description: "Demonstrating loading and interaction with a custom GLB model.",
+      tags: ["React", "Three.js", "GLTF"],
+      modelType: "glb",
+      demoLink: "/model-test",
+      codeLink: "#"
     }
   ];
 
@@ -214,7 +282,12 @@ export default function ProjectsSection() {
                 onMouseEnter={() => setActiveCard(i)}
                 onMouseLeave={() => setActiveCard(null)}
               >
-                <Project3DPreview modelType={project.modelType} hovered={activeCard === i} />
+                {/* Preview Section */}
+                {project.modelType === "glb" ? (
+                  <ModelViewerPreview hovered={activeCard === i} />
+                ) : (
+                  <Project3DPreview modelType={project.modelType} hovered={activeCard === i} />
+                )}
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
                     {project.title}
@@ -233,16 +306,62 @@ export default function ProjectsSection() {
                     ))}
                   </div>
                 </CardContent>
-                <CardFooter className="flex justify-between">
-                  <Button variant="outline" size="sm" className="flex items-center gap-2 group btn-fancy">
-                    <Github className="w-4 h-4 group-hover:text-primary transition-colors" /> 
-                    <span>Code</span>
-                  </Button>
-                  <Button size="sm" className="flex items-center gap-2 group btn-fancy">
-                    <span>Demo</span>
-                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </Button>
-                </CardFooter>
+                <Dialog>
+                  <CardFooter className="flex justify-between">
+                    <Button variant="outline" size="sm" className="flex items-center gap-2 group btn-fancy" asChild>
+                      <a href={project.codeLink || '#'} target="_blank" rel="noopener noreferrer">
+                        <Github className="w-4 h-4 group-hover:text-primary transition-colors" /> 
+                        <span>Code</span>
+                      </a>
+                    </Button>
+                    <DialogTrigger asChild>
+                      <Button 
+                        size="sm" 
+                        className="flex items-center gap-2 group btn-fancy"
+                      >
+                        <span>Demo</span>
+                        <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                      </Button>
+                    </DialogTrigger>
+                  </CardFooter>
+                  <DialogContent className="sm:max-w-[525px] bg-secondary/90 backdrop-blur-sm border-primary/10">
+                    <DialogHeader>
+                      <DialogTitle className="text-2xl font-bold text-primary">{project.title}</DialogTitle>
+                      <DialogDescription className="text-muted-foreground">
+                        {project.description}
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="py-4">
+                      <h3 className="text-lg font-semibold mb-2 text-foreground">Project Details</h3>
+                      <p className="text-sm text-muted-foreground mb-1">Tags: {project.tags.join(', ')}</p>
+                      <p className="text-sm text-muted-foreground mb-1">Model Type: {project.modelType}</p>
+                      {project.demoLink && <p className="text-sm text-muted-foreground">Demo Link: {project.demoLink}</p>}
+                    </div>
+                    <DialogFooter className="justify-between sm:justify-between">
+                      <DialogClose asChild>
+                        <Button type="button" variant="secondary">
+                          Close
+                        </Button>
+                      </DialogClose>
+                      <div className="flex gap-2">
+                        {project.codeLink && (
+                          <Button variant="outline" size="sm" className="flex items-center gap-2" asChild>
+                            <a href={project.codeLink} target="_blank" rel="noopener noreferrer">
+                              <Github className="w-4 h-4" /> Code
+                            </a>
+                          </Button>
+                        )}
+                        {project.demoLink && (
+                          <Button asChild size="sm" className="flex items-center gap-2">
+                            <a href={project.demoLink} target="_blank" rel="noopener noreferrer">
+                              Open Demo <ExternalLink className="w-4 h-4" />
+                            </a>
+                          </Button>
+                        )}
+                      </div>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </Card>
             </TiltCard>
           ))}

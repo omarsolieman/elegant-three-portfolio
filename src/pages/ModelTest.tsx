@@ -1,4 +1,3 @@
-
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
 import ModelViewer from '@/components/ModelViewer';
@@ -16,12 +15,12 @@ export default function ModelTest() {
         <div className="bg-secondary/20 rounded-lg p-4 min-h-[400px]">
           <h2 className="text-xl font-semibold mb-4">Model Viewer</h2>
           <div className="h-[350px] bg-black/20 rounded-lg overflow-hidden">
-            <Canvas shadows>
+            <Canvas shadows camera={{ position: [0, 1, 5], fov: 50 }}>
               <ambientLight intensity={0.5} />
               <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
               <Suspense fallback={null}>
                 <ModelViewer position={[0, 0, 0]} scale={1} rotation={[0, 0, 0]} />
-                <OrbitControls />
+                <OrbitControls target={[0, 0, 0]} />
                 <Environment preset="city" />
               </Suspense>
             </Canvas>
