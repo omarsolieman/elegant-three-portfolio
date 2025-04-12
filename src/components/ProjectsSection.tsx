@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, Float } from '@react-three/drei';
@@ -22,44 +21,42 @@ function Project3DPreview({ modelType, hovered }) {
       <Canvas>
         <ambientLight intensity={0.5} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
-        <Float speed={3} rotationIntensity={rotating ? 1 : 0} floatIntensity={hovered ? 2 : 1}>
-          {modelType === 'cube' && (
-            <mesh onClick={() => setRotating(!rotating)}>
-              <boxGeometry args={[1.5, 1.5, 1.5]} />
-              <meshStandardMaterial 
-                color="#ff49db" 
-                metalness={0.5} 
-                roughness={0.2}
-                emissive="#ff49db"
-                emissiveIntensity={hovered ? 0.2 : 0} 
-              />
-            </mesh>
-          )}
-          {modelType === 'sphere' && (
-            <mesh onClick={() => setRotating(!rotating)}>
-              <sphereGeometry args={[1, 32, 32]} />
-              <meshStandardMaterial 
-                color="#0095ff" 
-                metalness={0.2} 
-                roughness={0.3}
-                emissive="#0095ff"
-                emissiveIntensity={hovered ? 0.2 : 0}  
-              />
-            </mesh>
-          )}
-          {modelType === 'torus' && (
-            <mesh onClick={() => setRotating(!rotating)}>
-              <torusGeometry args={[1, 0.4, 16, 32]} />
-              <meshStandardMaterial 
-                color="#00e676" 
-                metalness={0.4} 
-                roughness={0.2}
-                emissive="#00e676"
-                emissiveIntensity={hovered ? 0.2 : 0}  
-              />
-            </mesh>
-          )}
-        </Float>
+        {modelType === 'cube' && (
+          <mesh onClick={() => setRotating(!rotating)}>
+            <boxGeometry args={[1.5, 1.5, 1.5]} />
+            <meshStandardMaterial 
+              color="#ff49db" 
+              metalness={0.5} 
+              roughness={0.2}
+              emissive="#ff49db"
+              emissiveIntensity={hovered ? 0.2 : 0} 
+            />
+          </mesh>
+        )}
+        {modelType === 'sphere' && (
+          <mesh onClick={() => setRotating(!rotating)}>
+            <sphereGeometry args={[1, 32, 32]} />
+            <meshStandardMaterial 
+              color="#0095ff" 
+              metalness={0.2} 
+              roughness={0.3}
+              emissive="#0095ff"
+              emissiveIntensity={hovered ? 0.2 : 0}  
+            />
+          </mesh>
+        )}
+        {modelType === 'torus' && (
+          <mesh onClick={() => setRotating(!rotating)}>
+            <torusGeometry args={[1, 0.4, 16, 32]} />
+            <meshStandardMaterial 
+              color="#00e676" 
+              metalness={0.4} 
+              roughness={0.2}
+              emissive="#00e676"
+              emissiveIntensity={hovered ? 0.2 : 0}  
+            />
+          </mesh>
+        )}
         <OrbitControls enableZoom={false} autoRotate={rotating} autoRotateSpeed={hovered ? 6 : 3} />
         <PerspectiveCamera makeDefault position={[0, 0, 5]} />
       </Canvas>
