@@ -35,8 +35,8 @@ export default function ModelViewer({
     <ErrorBoundary>
       <group 
         ref={groupRef} 
-        position={position} 
-        rotation={rotation} 
+        position={position as any} 
+        rotation={rotation as any} 
         scale={typeof scale === 'number' ? [scale, scale, scale] : scale}
       >
         <primitive object={model} />

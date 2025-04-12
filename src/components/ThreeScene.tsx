@@ -167,7 +167,7 @@ interface Particle {
 }
 
 function BackgroundParticles({ count = 500 }) {
-  const meshRef = useRef<Group>(null);
+  const meshRef = useRef<THREE.Group>(null);
   const { viewport } = useThree();
   
   const [particles, setParticles] = useState<Particle[]>([]);
@@ -238,7 +238,7 @@ function BackgroundParticles({ count = 500 }) {
 }
 
 function ShootingStar() {
-  const ref = useRef<Mesh>(null);
+  const ref = useRef<THREE.Mesh>(null);
   const [active, setActive] = useState(false);
   const [position, setPosition] = useState<[number, number, number]>([0, 0, 0]);
   const [direction, setDirection] = useState<[number, number, number]>([0, 0, 0]);
@@ -347,7 +347,7 @@ function GlowingOrbs() {
 }
 
 function OrbWithMotion({ orb }: { orb: Orb }) {
-  const meshRef = useRef<Mesh>(null);
+  const meshRef = useRef<THREE.Mesh>(null);
   const initialPosition = useRef<[number, number, number]>(orb.position);
   
   useFrame((state) => {
