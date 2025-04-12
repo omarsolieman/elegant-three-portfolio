@@ -9,6 +9,41 @@ import CodeWritingEffect from "@/components/CodeWritingEffect";
 import CodeShootingStars from "@/components/CodeShootingStars";
 import { ArrowDown, Sparkles } from "lucide-react";
 import { useEffect, useState, useRef, Suspense } from "react";
+import React from 'react';
+
+interface ErrorBoundaryProps {
+  children: React.ReactNode;
+  onError?: (error: Error) => void;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+}
+
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
+    if (this.props.onError) {
+      this.props.onError(error);
+    }
+    console.error("Error in ThreeScene:", error, errorInfo);
+  }
+
+  render(): React.ReactNode {
+    if (this.state.hasError) {
+      return null;
+    }
+    return this.props.children;
+  }
+}
 
 const FloatingLight = ({ size, delay, duration, left, top, opacity }) => {
   return (
@@ -92,7 +127,8 @@ const Index = () => {
   const heroRef = useRef(null);
   const [isClient, setIsClient] = useState(false);
   const [threeJsError, setThreeJsError] = useState(false);
-  
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+
   useEffect(() => {
     setIsClient(true);
     
@@ -110,8 +146,6 @@ const Index = () => {
     console.log("Index component initialized");
   }, []);
 
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  
   useEffect(() => {
     const handleMouseMove = (e) => {
       setCursorPos({ x: e.clientX, y: e.clientY });
@@ -121,7 +155,7 @@ const Index = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  const handleThreeJsError = (error) => {
+  const handleThreeJsError = (error: Error) => {
     console.error("Error loading Three.js scene:", error);
     setThreeJsError(true);
   };
@@ -225,28 +259,5 @@ const Index = () => {
     </div>
   );
 };
-
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError(error) {
-    return { hasError: true };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    this.props.onError?.(error);
-    console.error("Error in ThreeScene:", error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return null;
-    }
-    return this.props.children;
-  }
-}
 
 export default Index;
