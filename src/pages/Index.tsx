@@ -1,5 +1,6 @@
 
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import AboutSection from "@/components/AboutSection";
@@ -26,6 +27,16 @@ const Index: React.FC = () => {
       <ArchiveSection />
       <ContactSection />
       <Footer />
+
+      {/* Dev Tools */}
+      <div className="fixed bottom-4 right-4 z-50">
+        <Link 
+          to="/model-test" 
+          className="bg-primary/80 hover:bg-primary text-white px-4 py-2 rounded-md text-sm shadow-lg transition-colors"
+        >
+          3D Model Test
+        </Link>
+      </div>
 
       <div className="fixed -bottom-40 -left-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-pulse-glow"></div>
       <div className="fixed -top-20 -right-20 w-60 h-60 bg-primary/5 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: "1.5s" }}></div>
