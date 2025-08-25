@@ -203,33 +203,33 @@ export default function ProjectsSection() {
   
   const projects = [
     {
-      title: "Interactive Dashboard",
-      description: "A data visualization dashboard with real-time updates and 3D charts.",
-      tags: ["React", "Three.js", "D3.js"],
+      title: "Low-Cost Local Smart Home System",
+      description: "Off The shelf components modded and improved to build a Localized, reliable and affordable smart home system.",
+      tags: ["RaspberryPi", "Zigbee", "ESP32", "Home Assistant", "3D Printing", "IoT"],
       modelType: "cube",
       demoLink: "#",
       codeLink: "#"
     },
     {
-      title: "E-commerce Platform",
-      description: "A modern e-commerce site with 3D product previews and AR features.",
-      tags: ["Next.js", "WebGL", "Shopify"],
+      title: "Smart IoT Hydroponics Control System",
+      description: "A modern IoT system for managing hydroponic farms with real-time monitoring.",
+      tags: ["ESP8266", "ESP-Home", "Home Assistant", "3D Printing", "IoT", "PCB Design", "Sensor Integration"],
       modelType: "sphere",
       demoLink: "#",
       codeLink: "#"
     },
     {
-      title: "3D Portfolio Generator",
-      description: "A tool for creatives to build interactive 3D portfolios without coding.",
-      tags: ["Three.js", "React", "Firebase"],
+      title: "3D Printed Hydroponic Tower",
+      description: "A sustainable solution for urban gardening using 3D printing technology.",
+      tags: ["3D Printing", "Fusion 360", "ESP32", "IoT", "Hydroponics"],
       modelType: "torus",
       demoLink: "#",
       codeLink: "#"
     },
     {
-      title: "GLB Model Showcase",
-      description: "Demonstrating loading and interaction with a custom GLB model.",
-      tags: ["React", "Three.js", "GLTF"],
+      title: "G8KEEPER",
+      description: "Offline, Hardware, Encrypted Password Manager",
+      tags: ["RP2040", "micropython", "Encryption", "Security", "Fusion 360", "3D Printing", "Soldering"],
       modelType: "glb",
       demoLink: "/model-test",
       codeLink: "#"
