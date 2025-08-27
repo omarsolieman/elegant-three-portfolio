@@ -39,38 +39,47 @@ export default function ArchiveSection() {
   // Sample project data - replace with your actual projects
   const archivedProjects = [
     {
-      title: "Personal Blog",
-      description: "A minimalist blog built with Gatsby and MDX",
-      year: "2023",
+      title: "ODesigns",
+      description: "Website for a freelance design business",
+      year: "2021",
       category: "Web",
-      technologies: ["React", "Gatsby", "GraphQL"],
+      technologies: ["Vue.js", "Tailwindcss", "GraphQL"],
       link: "#",
       codeLink: "#"
     },
     {
-      title: "Weather Tracker",
-      description: "A simple weather app using the OpenWeather API",
+      title: "MMU ZTE IoT",
+      description: "Website for IoT competition at MMU in collaboration with ZTE",
       year: "2022",
       category: "Web",
-      technologies: ["JavaScript", "API", "CSS"],
+      technologies: ["Vue.js", "API", "Tailwindcss"],
       link: "#",
       codeLink: "#"
     },
     {
-      title: "Task Manager",
-      description: "A productivity app for organizing daily tasks",
+      title: "Manarat Academy",
+      description: "Website for an educational academy Based in Malaysia",
       year: "2022",
-      category: "App",
-      technologies: ["React", "Firebase", "Tailwind"],
+      category: "Web",
+      technologies: ["React", "Tailwindcss", "Webflow"],
       link: "#",
       codeLink: "#"
     },
     {
-      title: "Sunset Shader",
-      description: "A GLSL shader experiment creating realistic sunset effects",
-      year: "2023",
-      category: "Graphics",
-      technologies: ["WebGL", "GLSL", "Three.js"],
+      title: "Lahjan Academy",
+      description: "A website for an educational academy based in Malaysia",
+      year: "2024",
+      category: "Web",
+      technologies: ["React", "Tailwindcss", "WordPress"],
+      link: "#",
+      codeLink: "#"
+    },
+        {
+      title: "TQ Clinic",
+      description: "A website for a clinic based in Saudi Arabia with multi-branch appointment system",
+      year: "2024",
+      category: "Web",
+      technologies: ["React", "Tailwindcss", "WordPress"],
       link: "#",
       codeLink: "#"
     },
@@ -93,11 +102,11 @@ export default function ArchiveSection() {
       codeLink: "#"
     },
     {
-      title: "Music Visualizer",
-      description: "Audio responsive graphics using Web Audio API",
-      year: "2023",
-      category: "Graphics",
-      technologies: ["Web Audio API", "Canvas", "JavaScript"],
+      title: "Encrypto",
+      description: "Simple CLI-Based file encryption and decryption tool",
+      year: "2019",
+      category: "Apps",
+      technologies: ["Python", "Cryptography"],
       link: "#",
       codeLink: "#"
     }
