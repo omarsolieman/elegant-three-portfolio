@@ -7,19 +7,21 @@ import ErrorBoundary from './ErrorBoundary';
 
 interface ModelViewerProps {
   position?: [number, number, number];
-  scale?: number | [number, number, number];
   rotation?: [number, number, number];
+  scale?: number | [number, number, number];
+  url: string;
 }
 
 export default function ModelViewer({ 
   position = [0, 0, 0], 
   scale = 1, 
-  rotation = [0, 0, 0] 
+  rotation = [0, 0, 0],
+  url
 }: ModelViewerProps) {
   const groupRef = useRef<THREE.Group>(null);
   
   // Load the GLB model
-  const { scene } = useGLTF('/models/scene.glb', true);
+  const { scene } = useGLTF(url, true);
   
   // Clone the scene to prevent issues with reusing the same object
   const model = scene.clone();
@@ -45,5 +47,4 @@ export default function ModelViewer({
   );
 }
 
-// Preload the model to improve performance
-useGLTF.preload('/models/scene.glb');
+// Note: Preloading can be done at call sites if needed, e.g., useGLTF.preload('/models/yourModel.glb');

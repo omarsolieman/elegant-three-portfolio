@@ -19,7 +19,12 @@ export default function ModelTest() {
               <ambientLight intensity={0.5} />
               <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
               <Suspense fallback={null}>
-                <ModelViewer position={[0, 0, 0]} scale={1} rotation={[0, 0, 0]} />
+                {/* First model */}
+                <ModelViewer url="/models/SteeringWheel.glb" position={[-1.2, 0, 0]} scale={0.9} rotation={[0, 0.3, 0]} />
+
+                {/* Second model */}
+                <ModelViewer url="/models/scene.glb" position={[1.2, 0, 0]} scale={0.9} rotation={[0, -0.3, 0]} />
+
                 <OrbitControls target={[0, 0, 0]} />
                 <Environment preset="city" />
               </Suspense>
@@ -40,7 +45,7 @@ export default function ModelTest() {
             </div>
             <div>
               <p className="font-medium">Model Information:</p>
-              <p className="text-sm text-muted-foreground">Path: /models/scene.glb</p>
+              <p className="text-sm text-muted-foreground">Paths: /models/SteeringWheel.glb and /models/scene.glb</p>
             </div>
           </div>
         </div>

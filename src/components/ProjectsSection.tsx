@@ -120,12 +120,15 @@ function TiltCard({ children, className }) {
 }
 
 // New component for the ModelViewer preview
-function ModelViewerPreview({ hovered }) {
+function ModelViewerPreview({ hovered, url }) {
   const [rotating, setRotating] = useState(true);
 
   // Adjust scale and camera position for the card context
   const modelScale = 0.7; // Adjust as needed
   const cameraPosition: [number, number, number] = [0, 2, 6]; // Increase Z distance to zoom out
+
+  // Conditional Y offset per model to keep it centered
+  const modelYOffset = url && url.includes('SteeringWheel') ? -1.0 : -3.8;
 
   return (
     <div className="relative h-[220px] w-full overflow-hidden rounded-t-lg group">
@@ -142,8 +145,9 @@ function ModelViewerPreview({ hovered }) {
         <spotLight position={[5, 5, 5]} angle={0.2} penumbra={1} intensity={0.8} castShadow />
         <Suspense fallback={null}>
           <ModelViewer 
-            position={[0, -3.8, 0]} // Lower the model to compensate for internal offset
+            position={[0, modelYOffset, 0]}
             scale={modelScale} 
+            url={url || "/models/SteeringWheel.glb"}
           />
           <OrbitControls 
             enableZoom={false} 
@@ -231,6 +235,16 @@ export default function ProjectsSection() {
       description: "Offline, Hardware, Encrypted Password Manager",
       tags: ["RP2040", "micropython", "Encryption", "Security", "Fusion 360", "3D Printing", "Soldering"],
       modelType: "glb",
+      modelUrl: "/models/scene.glb",
+      demoLink: "/model-test",
+      codeLink: "https://github.com/omarsolieman/G8KEEPER"
+    },
+    {
+      title: "Carbon Fiber & 3D printed Steering Wheel",
+      description: "A custom steering wheel design utilizing carbon fiber and 3D printing technology for the SEM2025 Competition.",
+      tags: ["3D Printing", "Fusion 360", "SolidWorks", "Carbon Fiber"],
+      modelType: "glb",
+      modelUrl: "/models/SteeringWheel.glb",
       demoLink: "/model-test",
       codeLink: "https://github.com/omarsolieman/G8KEEPER"
     },
@@ -239,6 +253,7 @@ export default function ProjectsSection() {
       description: "An Open Source Desktop pet based on the raspberry pi pico and micropython",
       tags: ["RP2040", "micropython", "Fusion 360", "3D Printing", "Soldering"],
       modelType: "glb",
+      modelUrl: "/models/scene.glb",
       demoLink: "/model-test",
       codeLink: "https://github.com/omarsolieman/PicoPet"
     }
@@ -292,7 +307,7 @@ export default function ProjectsSection() {
               >
                 {/* Preview Section */}
                 {project.modelType === "glb" ? (
-                  <ModelViewerPreview hovered={activeCard === i} />
+                  <ModelViewerPreview hovered={activeCard === i} url={project.modelUrl} />
                 ) : (
                   <Project3DPreview modelType={project.modelType} hovered={activeCard === i} />
                 )}

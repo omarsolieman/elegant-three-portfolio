@@ -363,6 +363,7 @@ export function SceneContent() {
             position={[-2, 0, 0]} 
             rotation={[0.5, 0.5, 0]} 
             scale={0.5} 
+            url="/models/SteeringWheel.glb"
           />
         </Float>
       </ErrorBoundary>
