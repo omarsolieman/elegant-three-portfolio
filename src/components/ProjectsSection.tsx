@@ -232,7 +232,15 @@ export default function ProjectsSection() {
       tags: ["RP2040", "micropython", "Encryption", "Security", "Fusion 360", "3D Printing", "Soldering"],
       modelType: "glb",
       demoLink: "/model-test",
-      codeLink: "#"
+      codeLink: "https://github.com/omarsolieman/G8KEEPER"
+    },
+    {
+      title: "PicoPet",
+      description: "An Open Source Desktop pet based on the raspberry pi pico and micropython",
+      tags: ["RP2040", "micropython", "Fusion 360", "3D Printing", "Soldering"],
+      modelType: "glb",
+      demoLink: "/model-test",
+      codeLink: "https://github.com/omarsolieman/PicoPet"
     }
   ];
 

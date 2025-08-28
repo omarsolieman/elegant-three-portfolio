@@ -44,7 +44,7 @@ export default function ArchiveSection() {
       year: "2021",
       category: "Web",
       technologies: ["Vue.js", "Tailwindcss", "GraphQL"],
-      link: "#",
+      link: "https://odesigns.netlify.app/",
       codeLink: "#"
     },
     {
@@ -53,7 +53,7 @@ export default function ArchiveSection() {
       year: "2022",
       category: "Web",
       technologies: ["Vue.js", "API", "Tailwindcss"],
-      link: "#",
+      link: "https://mmuzteiot.netlify.app/",
       codeLink: "#"
     },
     {
@@ -62,7 +62,7 @@ export default function ArchiveSection() {
       year: "2022",
       category: "Web",
       technologies: ["React", "Tailwindcss", "Webflow"],
-      link: "#",
+      link: "https://www.manarat-academy.com/",
       codeLink: "#"
     },
     {
@@ -71,35 +71,26 @@ export default function ArchiveSection() {
       year: "2024",
       category: "Web",
       technologies: ["React", "Tailwindcss", "WordPress"],
-      link: "#",
+      link: "https://lahjanacademy.com/",
       codeLink: "#"
     },
-        {
+    {
       title: "TQ Clinic",
       description: "A website for a clinic based in Saudi Arabia with multi-branch appointment system",
       year: "2024",
       category: "Web",
       technologies: ["React", "Tailwindcss", "WordPress"],
-      link: "#",
+      link: "https://tqclinic.com/",
       codeLink: "#"
     },
     {
-      title: "Portfolio v1",
-      description: "The first iteration of my personal portfolio website",
-      year: "2021",
+      title: "ArcGis Maps Integration",
+      description: "A website for integrating publically available ArcGIS maps and data into a web application",
+      year: "2024",
       category: "Web",
-      technologies: ["HTML", "CSS", "JavaScript"],
-      link: "#",
-      codeLink: "#"
-    },
-    {
-      title: "Pixel Art Generator",
-      description: "A tool for creating and exporting pixel art designs",
-      year: "2022",
-      category: "Graphics",
-      technologies: ["Canvas API", "JavaScript", "React"],
-      link: "#",
-      codeLink: "#"
+      technologies: ["React", "Tailwindcss", "ArcGIS"],
+      link: "https://github.com/omarsolieman/ArcGisReactDashboard",
+      codeLink: "https://github.com/omarsolieman/ArcGisReactDashboard"
     },
     {
       title: "Encrypto",
@@ -107,8 +98,17 @@ export default function ArchiveSection() {
       year: "2019",
       category: "Apps",
       technologies: ["Python", "Cryptography"],
-      link: "#",
-      codeLink: "#"
+      link: "https://github.com/omarsolieman/Encrypto",
+      codeLink: "https://github.com/omarsolieman/Encrypto"
+    },
+    {
+      title: "HiUpload",
+      description: "HiUpload is a file upload SaaS that was made using Vue.js [Front-end] & Laravel [Back-end] using AWS S3 for file storage. or Storj for decentralized storage.",
+      year: "2019",
+      category: "Web",
+      technologies: ["Vue.js", "Laravel"],
+      link: "https://github.com/omarsolieman/HiUpload",
+      codeLink: "https://github.com/omarsolieman/HiUpload"
     }
   ];
   
