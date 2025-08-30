@@ -124,11 +124,27 @@ function ModelViewerPreview({ hovered, url }) {
   const [rotating, setRotating] = useState(true);
 
   // Adjust scale and camera position for the card context
-  const modelScale = 0.7; // Adjust as needed
+  //const modelScale = 0.7; // Adjust as needed
   const cameraPosition: [number, number, number] = [0, 2, 6]; // Increase Z distance to zoom out
 
   // Conditional Y offset per model to keep it centered
-  const modelYOffset = url && url.includes('SteeringWheel') ? -1.0 : -3.8;
+  //const modelYOffset = url && (url.includes('SteeringWheel') || url.includes('PicoPet')) ? -1.0 : -3.8;
+  // Per-model Y offset for better centering in the card preview
+  // Per-model scale and Y offset for better centering and visibility
+  const modelAdjustments: Record<string, { scale: number; yOffset: number }> = {
+    "/models/SteeringWheel.glb": { scale: 0.7, yOffset: -1.0 },
+    "/models/PicoPet.glb": { scale: 0.7, yOffset: -0.2 },
+    "/models/FireFightingRobot.glb": { scale: 0.7, yOffset: -2.5 },
+    "/models/scene.glb": { scale: 0.7, yOffset: -3.8 },
+    "/models/HydroTower.glb": { scale: 0.09, yOffset: -2.5 }, // Smaller scale, less offset for tall model
+    // Add more mappings as needed
+  };
+
+  // Use adjustments if available, otherwise fallback to defaults
+  const { scale: modelScale, yOffset: modelYOffset } = url && modelAdjustments[url]
+    ? modelAdjustments[url]
+    : { scale: 0.7, yOffset: -3.8 };
+  //const modelYOffset = url && modelYOffsets[url] !== undefined ? modelYOffsets[url] : -3.8;
 
   return (
     <div className="relative h-[220px] w-full overflow-hidden rounded-t-lg group">
@@ -226,7 +242,8 @@ export default function ProjectsSection() {
       title: "3D Printed Hydroponic Tower",
       description: "A sustainable solution for urban gardening using 3D printing technology.",
       tags: ["3D Printing", "Fusion 360", "ESP32", "IoT", "Hydroponics"],
-      modelType: "torus",
+      modelType: "glb",
+      modelUrl: "/models/HydroTower.glb",
       demoLink: "#",
       codeLink: "#"
     },
@@ -249,11 +266,20 @@ export default function ProjectsSection() {
       codeLink: "https://github.com/omarsolieman/G8KEEPER"
     },
     {
+      title: "Firefighting Robot",
+      description: "A custom firefighting robot design utilizing advanced sensors and 3D printing technology.",
+      tags: ["3D Printing", "Fusion 360", "SolidWorks", "Robotics"],
+      modelType: "glb",
+      modelUrl: "/models/FireFightingRobot.glb",
+      demoLink: "/model-test",
+      codeLink: "https://github.com/omarsolieman/G8KEEPER"
+    },
+    {
       title: "PicoPet",
       description: "An Open Source Desktop pet based on the raspberry pi pico and micropython",
       tags: ["RP2040", "micropython", "Fusion 360", "3D Printing", "Soldering"],
       modelType: "glb",
-      modelUrl: "/models/scene.glb",
+      modelUrl: "/models/PicoPet.glb",
       demoLink: "/model-test",
       codeLink: "https://github.com/omarsolieman/PicoPet"
     }
