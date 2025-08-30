@@ -136,6 +136,7 @@ function ModelViewerPreview({ hovered, url }) {
     "/models/PicoPet.glb": { scale: 0.7, yOffset: -0.2 },
     "/models/FireFightingRobot.glb": { scale: 0.7, yOffset: -2.5 },
     "/models/scene.glb": { scale: 0.7, yOffset: -3.8 },
+    "/models/SocialAnalytics.glb": { scale: 0.2, yOffset: -3.8 },
     "/models/HydroTower.glb": { scale: 0.09, yOffset: -2.5 }, // Smaller scale, less offset for tall model
     // Add more mappings as needed
   };
@@ -237,6 +238,15 @@ export default function ProjectsSection() {
       modelType: "sphere",
       demoLink: "#",
       codeLink: "#"
+    },
+    {
+      title: "Advanced Instagram Giveaway Analysis & Automation",
+      description: "A Group Of Python Scripts Using Pandas, Matlib, Numpy, Seaborn Libaries to Analyze and Automate Giveaways",
+      tags: ["Python", "Pandas", "Numpy", "Seaborn", "Data-Analysis", "Legal-Scraping", "Data-Visualization", "Three.js"],
+      modelType: "glb",
+      modelUrl: "/models/SocialAnalytics.glb",
+      demoLink: "https://github.com/omarsolieman/SocialGiveAwayDataAnalysis",
+      codeLink: "https://github.com/omarsolieman/SocialGiveAwayDataAnalysis"
     },
     {
       title: "3D Printed Hydroponic Tower",
