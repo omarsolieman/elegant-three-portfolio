@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Github, Linkedin, Mail, Send, Twitter, Sparkles } from "lucide-react";
+import { Github, Linkedin, Mail, Send, Twitter, Sparkles, Instagram } from "lucide-react";
 import { useState } from "react";
 
 export default function ContactSection() {
@@ -114,9 +114,9 @@ export default function ContactSection() {
               <h3 className="text-xl font-display font-semibold mb-4">Connect With Me</h3>
               <div className="flex gap-4">
                 {[
-                  { icon: Github, label: "GitHub", url: "https://github.com" },
-                  { icon: Linkedin, label: "LinkedIn", url: "https://linkedin.com" },
-                  { icon: Twitter, label: "Twitter", url: "https://twitter.com" }
+                  { icon: Github, label: "GitHub", url: "https://github.com/omarsolieman" },
+                  { icon: Linkedin, label: "LinkedIn", url: "https://www.linkedin.com/in/omarsolieman/" },
+                  { icon: Instagram, label: "Instagram", url: "https://instagram.com/omarsolieman" }
                 ].map((item, i) => (
                   <a 
                     key={i}

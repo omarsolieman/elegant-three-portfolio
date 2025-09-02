@@ -1,4 +1,3 @@
-
 import {
   Dialog,
   DialogContent,
@@ -32,7 +31,7 @@ export function ResumeDialog({ children }: ResumeDialogProps) {
             <span>|</span>
             <span>+60 14-234 5515</span>
             <span>|</span>
-            <a href="mailto:omarsoliemanwork@gmail.com" className="text-primary hover:underline">omarsoliemanwork@gmail.com</a>
+            <a href="mailto:omarmedhat2004@gmail.com" className="text-primary hover:underline">omarmedhat2004@gmail.com</a>
             <span>|</span>
             <a href="#" className="text-primary hover:underline">Portfolio</a>
           </DialogDescription>
@@ -53,9 +52,10 @@ export function ResumeDialog({ children }: ResumeDialogProps) {
                   <span className="text-xs text-muted-foreground">Feb 2023 - Current</span>
                 </div>
                 <p className="text-sm text-muted-foreground">Bachelor of Computer Science</p>
-                <p className="text-sm mt-1">
-                  Member of RoboClub, Head of Electrical Systems in Shell Eco-Marathon (Hyperion), and winner of the Spirit of Shell Eco-Marathon SEMA2025 award in Qatar
-                </p>
+                <ul className="text-sm mt-1 list-disc ml-4 space-y-1">
+                  <li>Member of RoboClub, Head of Electrical Systems in Shell Eco-Marathon (Hyperion)</li>
+                  <li>Currently looking for Internship Placement</li>
+                </ul>
               </div>
               
               <div className="border-l-2 border-primary/30 pl-4">
@@ -79,27 +79,27 @@ export function ResumeDialog({ children }: ResumeDialogProps) {
             </h3>
             
             <div className="space-y-4">
-              <div className="border-l-2 border-primary/30 pl-4">
+               <div className="border-l-2 border-primary/30 pl-4">
                 <div className="flex justify-between items-start">
-                  <h4 className="font-medium">Shell Eco-Marathon (SEM) 2025 Qatar</h4>
-                  <span className="text-xs text-muted-foreground">Feb 2025</span>
+                  <h4 className="font-medium">Shell Eco-Marathon (SEM) 2025</h4>
+                  <span className="text-xs text-muted-foreground">Jan 2024 - Feb 2025</span>
                 </div>
                 <p className="text-sm text-muted-foreground">Head of Electrical Safety | Monash Hyperion Racing Team</p>
                 <ul className="text-sm mt-1 list-disc ml-4 space-y-1">
-                  <li>Led the design and implementation of the vehicle's electrical safety system, including a custom steering wheel with an integrated deadman's switch, ensuring compliance with Shell Eco-marathon standards.</li>
-                  <li>Mentored and led a team of five junior members, fostering skill development while maintaining project quality.</li>
-                  <li>Completed a rapid steering wheel redesign within two days to address space constraints.</li>
+                  <li>Led the design and implementation of the vehicle's electrical safety system, ensuring compliance with Shell Eco-marathon standards, Passing Technical Inspection, and Getting a 10 Valid Runs on a single charge.</li>
+                  <li>Mentored and led a team of five junior members, In Designing & Building Electrical Safety System, Using 3D Printing, Laser Cutting, and PCB Design fostering skill development while maintaining project quality.</li>
+                  <li>Completed a rapid steering wheel redesign within two days to address space constraints, Used CAD design, 3D Printing, Laser Cutting and Carbon Fiber Composites Techniques to Build.</li>
                 </ul>
               </div>
-              
+
               <div className="border-l-2 border-primary/30 pl-4">
                 <div className="flex justify-between items-start">
                   <h4 className="font-medium">Manarat Academy</h4>
-                  <span className="text-xs text-muted-foreground">Nov 2023 - Dec 2024</span>
+                  <span className="text-xs text-muted-foreground">Nov 2023 - May 2025</span>
                 </div>
                 <p className="text-sm text-muted-foreground">Lead Web Developer</p>
                 <ul className="text-sm mt-1 list-disc ml-4 space-y-1">
-                  <li>Orchestrated the publishing of the entire website within 2 weeks of receiving the spec sheet.</li>
+                  <li>Orchestrated the publishing of the entire website within 1 weeks of receiving the spec sheet, And Oversaw Maintenance and updates for a period of 6 months</li>
                   <li>Lead team members in following teamwork principles and distributing the workload.</li>
                   <li>Proposed and executed solutions that boosted traffic by 30% and call rate by 18%.</li>
                 </ul>
@@ -108,25 +108,25 @@ export function ResumeDialog({ children }: ResumeDialogProps) {
               <div className="border-l-2 border-primary/30 pl-4">
                 <div className="flex justify-between items-start">
                   <h4 className="font-medium">MMU & ZTE</h4>
-                  <span className="text-xs text-muted-foreground">April 2022 - June 2022</span>
+                  <span className="text-xs text-muted-foreground">April 2022 - Nov 2022</span>
                 </div>
                 <p className="text-sm text-muted-foreground">Head Web Developer</p>
                 <ul className="text-sm mt-1 list-disc ml-4 space-y-1">
-                  <li>Proposed and executed solutions with team members to increase the responsiveness of the user Website and improve the Accessibility.</li>
-                  <li>Led my team members in developing and deploying the website and pushed the first version to production in less than 7 days.</li>
+                  <li>Proposed and executed solutions with team members to increase the responsiveness of the user Website and improve the Accessibility, Resulting in a 32% increase in Applicants.</li>
+                  <li>Led Team members in developing and deploying the website to production and Maintaining it for a period of 7 months until Competition Results and Prizes were Finalized.</li>
                   <li>Kept in direct contact with the clients and had a demo ready within 72 hours of receiving the requirements list And used SOLID principles to maintain best standards.</li>
                 </ul>
               </div>
               
               <div className="border-l-2 border-primary/30 pl-4">
                 <div className="flex justify-between items-start">
-                  <h4 className="font-medium">BIM</h4>
+                  <h4 className="font-medium">BIM Ventures (Venture Studio)</h4>
                   <span className="text-xs text-muted-foreground">Jan 2021 - May 2021</span>
                 </div>
                 <p className="text-sm text-muted-foreground">Full-Stack Web Developer | Saudi Arabia | Remote</p>
                 <ul className="text-sm mt-1 list-disc ml-4 space-y-1">
-                  <li>Collaborated in developing 2 websites for multiple clients in less than 2 months adhering to UI/UX standards and best practices.</li>
-                  <li>Utilized technologies like Vue.js, TailwindCSS, and Laravel while adhering to best practices.</li>
+                  <li>Collaborated in developing over 6+ websites for multiple clients in less than 2 months adhering to UI/UX standards and best practice and reducing delivery timeframe by 40%</li>
+                  <li>Utilized technologies like React.js, Next.js, Nuxt.js, Vue.js, TailwindCSS, and Laravel while adhering to best practices using Waterfall Methodology</li>
                 </ul>
               </div>
               
@@ -137,7 +137,7 @@ export function ResumeDialog({ children }: ResumeDialogProps) {
                 </div>
                 <p className="text-sm text-muted-foreground">Web Developer & Manufacturing Consultant</p>
                 <ul className="text-sm mt-1 list-disc ml-4 space-y-1">
-                  <li>Proposed and executed solutions with team members following Agile principles (Scrum) to increase the responsiveness of the user application and operations dashboard, leading to a 15% increase in efficiency and a 20% increase in ease of use while utilizing technologies like React.js, Node.js, Firebase & SQL.</li>
+                  <li>Proposed and executed solutions with team members following Agile principles (Scrum) to increase the responsiveness of the user application and operations dashboard in the most cost and time-efficient ways, leading to a 15% increase in efficiency and a 20% increase in ease of use while utilizing technologies like React.js, Node.js, Firebase & SQL.</li>
                   <li>Analyzed and collaborated with team members to design new layouts that improved the UI and UX of the user app and dashboards, thus decreasing customer support tickets by 25%.</li>
                   <li>Developed 3D-printed parts for some vehicles while ensuring maximum cost and time efficiency for production.</li>
                   <li>Facilitated the Reduction of the firebase cost by 60% by shifting redundant data to the Oracle database and adjusting the platform accordingly.</li>
@@ -151,7 +151,7 @@ export function ResumeDialog({ children }: ResumeDialogProps) {
                 </div>
                 <p className="text-sm text-muted-foreground">Assistant Instructor | Saudi Arabia</p>
                 <ul className="text-sm mt-1 list-disc ml-4 space-y-1">
-                  <li>Coached students aged 10-15 on industry-specific skills ranging from CAD design to artificial intelligence and machine learning during a two-month program involving over 100 students.</li>
+                  <li>Coached students aged 10-15 on industry-specific skills ranging from 3D printing & CAD design to artificial intelligence during a two-month program involving over 100 students.</li>
                   <li>Gathered resources and final project ideas for my students while mentoring students to execute them ranging from AI/ML to embedded systems and home automation while using C++, Python, and Javascript.</li>
                   <li>Oversaw students, ensuring that all safety procedures were adhered to while operating laser cutters and/or 3D printers with 0 accidents.</li>
                 </ul>
@@ -184,11 +184,11 @@ export function ResumeDialog({ children }: ResumeDialogProps) {
                 <h4 className="text-sm font-medium mb-2">Skills</h4>
                 <div className="flex flex-wrap gap-2">
                   {[
-                    "CAD design", "3D printing", "Laser cutting", "UI/UX design", 
+                    "CAD design", "3D printing & laser cutting", "UI/UX design", 
                     "Photo/Videography", "Video Editing", "Python", "Firebase", 
                     "Vue.js", "React.js", "Nuxt.js", "Express.js", "TailwindCSS", 
                     "Javascript", "SQL", "SQLite", "IoT", "Embedded Systems", 
-                    "Circuitpython", "English", "Arabic"
+                    "Circuitpython", "English & Arabic"
                   ].map((skill, index) => (
                     <span key={index} className="px-2 py-1 text-xs bg-secondary rounded-full">
                       {skill}
@@ -201,8 +201,8 @@ export function ResumeDialog({ children }: ResumeDialogProps) {
                 <h4 className="text-sm font-medium mb-2">Interests</h4>
                 <div className="flex flex-wrap gap-2">
                   {[
-                    "Robotics", "3D printing", "Photography", "Videography", 
-                    "Cycling", "Hiking", "Swimming", "Kyokushin karate"
+                    "Robotics", "3D printing", "photography", "videography", 
+                    "cycling", "hiking", "swimming", "Kyokushin karate"
                   ].map((interest, index) => (
                     <span key={index} className="px-2 py-1 text-xs bg-secondary rounded-full">
                       {interest}
@@ -260,3 +260,4 @@ export function ResumeDialog({ children }: ResumeDialogProps) {
     </Dialog>
   );
 }
+

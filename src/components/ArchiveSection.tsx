@@ -39,22 +39,13 @@ export default function ArchiveSection() {
   // Sample project data - replace with your actual projects
   const archivedProjects = [
     {
-      title: "ODesigns",
-      description: "Website for a freelance design business",
-      year: "2021",
+      title: "ArcGis Maps Integration",
+      description: "A website for integrating publically available ArcGIS maps and data into a web application",
+      year: "2024",
       category: "Web",
-      technologies: ["Vue.js", "Tailwindcss", "GraphQL"],
-      link: "https://odesigns.netlify.app/",
-      codeLink: "https://github.com/omarsolieman/ODesigns"
-    },
-    {
-      title: "MMU ZTE IoT",
-      description: "Website for IoT competition at MMU in collaboration with ZTE",
-      year: "2022",
-      category: "Web",
-      technologies: ["Vue.js", "API", "Tailwindcss"],
-      link: "https://mmuzteiot.netlify.app/",
-      codeLink: "https://github.com/omarsolieman/mmuzteiot"
+      technologies: ["React", "Tailwindcss", "ArcGIS"],
+      link: "https://arc-gis-react-dashboard.vercel.app/",
+      codeLink: "https://github.com/omarsolieman/ArcGisReactDashboard"
     },
     {
       title: "Manarat Academy",
@@ -64,6 +55,15 @@ export default function ArchiveSection() {
       technologies: ["React", "Tailwindcss", "Webflow"],
       link: "https://www.manarat-academy.com/",
       codeLink: "https://www.manarat-academy.com/"
+    },
+    {
+      title: "ODesigns",
+      description: "Website for a freelance design business",
+      year: "2021",
+      category: "Web",
+      technologies: ["Vue.js", "Tailwindcss", "GraphQL"],
+      link: "https://odesigns.netlify.app/",
+      codeLink: "https://github.com/omarsolieman/ODesigns"
     },
     {
       title: "Lahjan Academy",
@@ -84,13 +84,22 @@ export default function ArchiveSection() {
       codeLink: "https://tqclinic.com/"
     },
     {
-      title: "ArcGis Maps Integration",
-      description: "A website for integrating publically available ArcGIS maps and data into a web application",
-      year: "2024",
+      title: "Ecommerce API",
+      description: "Ecommerce API is a RESTful API built with Node.js and Express.js for managing online store operations.",
+      year: "2022",
       category: "Web",
-      technologies: ["React", "Tailwindcss", "ArcGIS"],
-      link: "https://github.com/omarsolieman/ArcGisReactDashboard",
-      codeLink: "https://github.com/omarsolieman/ArcGisReactDashboard"
+      technologies: ["Node.js", "Express.js", "MongoDB"],
+      link: "https://github.com/omarsolieman/ecommerceAPI",
+      codeLink: "https://github.com/omarsolieman/ecommerceAPI"
+    },
+    {
+      title: "MMU ZTE IoT",
+      description: "Website for IoT competition at MMU in collaboration with ZTE",
+      year: "2022",
+      category: "Web",
+      technologies: ["Vue.js", "API", "Tailwindcss"],
+      link: "https://mmuzteiot.netlify.app/",
+      codeLink: "https://github.com/omarsolieman/mmuzteiot"
     },
     {
       title: "Encrypto",
@@ -127,15 +136,6 @@ export default function ArchiveSection() {
       technologies: ["Vue.js", "Laravel"],
       link: "https://github.com/omarsolieman/HiUpload",
       codeLink: "https://github.com/omarsolieman/HiUpload"
-    },
-    {
-      title: "Ecommerce API",
-      description: "Ecommerce API is a RESTful API built with Node.js and Express.js for managing online store operations.",
-      year: "2022",
-      category: "Web",
-      technologies: ["Node.js", "Express.js", "MongoDB"],
-      link: "https://github.com/omarsolieman/ecommerceAPI",
-      codeLink: "https://github.com/omarsolieman/ecommerceAPI"
     },
     {
       title: "SEM2025 Vehicle Electric System",
@@ -176,7 +176,8 @@ export default function ArchiveSection() {
           </div>
           <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">More Creations</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            A collection of various projects and experiments I've worked on over the years. That are not in the above sections, Feel free to explore and check them out.
+            A collection of various projects and experiments I've worked on over the years. That are not in the above sections, Feel free to explore and check them out. <br/>
+            [Hover to read more about each project]
           </p>
         </div>
         
