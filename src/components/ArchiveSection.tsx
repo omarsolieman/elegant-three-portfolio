@@ -45,7 +45,7 @@ export default function ArchiveSection() {
       category: "Web",
       technologies: ["Vue.js", "Tailwindcss", "GraphQL"],
       link: "https://odesigns.netlify.app/",
-      codeLink: "#"
+      codeLink: "https://github.com/omarsolieman/ODesigns"
     },
     {
       title: "MMU ZTE IoT",
@@ -54,7 +54,7 @@ export default function ArchiveSection() {
       category: "Web",
       technologies: ["Vue.js", "API", "Tailwindcss"],
       link: "https://mmuzteiot.netlify.app/",
-      codeLink: "#"
+      codeLink: "https://github.com/omarsolieman/mmuzteiot"
     },
     {
       title: "Manarat Academy",
@@ -63,7 +63,7 @@ export default function ArchiveSection() {
       category: "Web",
       technologies: ["React", "Tailwindcss", "Webflow"],
       link: "https://www.manarat-academy.com/",
-      codeLink: "#"
+      codeLink: "https://www.manarat-academy.com/"
     },
     {
       title: "Lahjan Academy",
@@ -72,7 +72,7 @@ export default function ArchiveSection() {
       category: "Web",
       technologies: ["React", "Tailwindcss", "WordPress"],
       link: "https://lahjanacademy.com/",
-      codeLink: "#"
+      codeLink: "https://lahjanacademy.com/"
     },
     {
       title: "TQ Clinic",
@@ -81,7 +81,7 @@ export default function ArchiveSection() {
       category: "Web",
       technologies: ["React", "Tailwindcss", "WordPress"],
       link: "https://tqclinic.com/",
-      codeLink: "#"
+      codeLink: "https://tqclinic.com/"
     },
     {
       title: "ArcGis Maps Integration",
@@ -102,6 +102,24 @@ export default function ArchiveSection() {
       codeLink: "https://github.com/omarsolieman/Encrypto"
     },
     {
+      title: "Python Vaccination Managment App",
+      description: "Python Based GUI app for manging Vaccination Appointments and Bookings Using Kivy and Firebase",
+      year: "2021",
+      category: "Apps",
+      technologies: ["Python", "Firebase", "Kivy", "GUI"],
+      link: "https://github.com/omarsolieman/pythonCovid",
+      codeLink: "https://github.com/omarsolieman/pythonCovid"
+    },
+    {
+      title: "Motor Driving School Management System",
+      description: "CLI Python Based app for managing Motor Driving School Operations",
+      year: "2022",
+      category: "Apps",
+      technologies: ["Python", "Firebase", "CLI"],
+      link: "https://github.com/omarsolieman/MotorDrivingSchoolSystem",
+      codeLink: "https://github.com/omarsolieman/MotorDrivingSchoolSystem"
+    },
+    {
       title: "HiUpload",
       description: "HiUpload is a file upload SaaS that was made using Vue.js [Front-end] & Laravel [Back-end] using AWS S3 for file storage. or Storj for decentralized storage.",
       year: "2019",
@@ -109,7 +127,34 @@ export default function ArchiveSection() {
       technologies: ["Vue.js", "Laravel"],
       link: "https://github.com/omarsolieman/HiUpload",
       codeLink: "https://github.com/omarsolieman/HiUpload"
-    }
+    },
+    {
+      title: "Ecommerce API",
+      description: "Ecommerce API is a RESTful API built with Node.js and Express.js for managing online store operations.",
+      year: "2022",
+      category: "Web",
+      technologies: ["Node.js", "Express.js", "MongoDB"],
+      link: "https://github.com/omarsolieman/ecommerceAPI",
+      codeLink: "https://github.com/omarsolieman/ecommerceAPI"
+    },
+    {
+      title: "SEM2025 Vehicle Electric System",
+      description: "A vehicle electric system for the Prototype Hyperion Car for Shell Eco Marathon 2025 APME More information in Report",
+      year: "2025",
+      category: "Hardware",
+      technologies: ["KiCad", "SolidWorks", "Altium", "Fusion360", "Electric Engineering", "Electrical Safety", "Soldering"],
+      link: "https://docs.google.com/document/d/12xdigJrTuuzINhPWmryQuZ9GMeKI45XWOn4d1u77cjM/edit?usp=sharing",
+      codeLink: "https://docs.google.com/document/d/12xdigJrTuuzINhPWmryQuZ9GMeKI45XWOn4d1u77cjM/edit?usp=sharing"
+    },
+    {
+      title: "SEM2025 Electric System Enclosures & Mounts",
+      description: "Modular 3D printed Enclosures and mounts for the Hyperion Car for Shell Eco Marathon 2025 APME More information in Report",
+      year: "2025",
+      category: "Hardware",
+      technologies: ["KiCad", "SolidWorks", "Altium", "Fusion360", "Electric Engineering", "Electrical Safety", "Soldering"],
+      link: "https://docs.google.com/document/d/12xdigJrTuuzINhPWmryQuZ9GMeKI45XWOn4d1u77cjM/edit?usp=sharing",
+      codeLink: "https://docs.google.com/document/d/12xdigJrTuuzINhPWmryQuZ9GMeKI45XWOn4d1u77cjM/edit?usp=sharing"
+    },
   ];
   
   // Group projects by category
@@ -127,11 +172,11 @@ export default function ArchiveSection() {
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center mb-4 p-2 bg-secondary/30 rounded-full">
             <Sparkles className="w-5 h-5 mr-2 text-primary/70" />
-            <span className="text-sm font-medium">Project Archive</span>
+            <span className="text-sm font-medium">Project Directory</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">More Creations</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            A collection of various projects and experiments I've worked on over the years.
+            A collection of various projects and experiments I've worked on over the years. That are not in the above sections, Feel free to explore and check them out.
           </p>
         </div>
         

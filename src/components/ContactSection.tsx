@@ -93,8 +93,8 @@ export default function ContactSection() {
                 <div className="p-3 bg-secondary/50 rounded-full magic-border">
                   <Mail className="w-5 h-5 text-primary/70" />
                 </div>
-                <a href="mailto:omarsoliemanwork@gmail.com" className="text-primary/90 hover:text-primary transition-colors">
-                  omarsoliemanwork@gmail.com
+                <a href="mailto:omarmedhat2004@gmail.com" className="text-primary/90 hover:text-primary transition-colors">
+                  omarmedhat2004@gmail.com
                 </a>
               </div>
               
