@@ -10,6 +10,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Download, ExternalLink, Building, GraduationCap, Briefcase, Code } from "lucide-react";
 import { useState } from "react";
+// Note: PDF files cannot be imported directly.
+// Place your PDF in the 'public' folder of your project.
+// The URL below assumes the PDF is in the root of the 'public' folder.
+const resumePdfUrl = "/Omar Medhat Resume.pdf";
+
 
 interface ResumeDialogProps {
   children: React.ReactNode;
@@ -246,14 +251,16 @@ export function ResumeDialog({ children }: ResumeDialogProps) {
         
         <DialogFooter className="flex-col sm:flex-row gap-3">
           <Button variant="outline" className="flex-1 sm:flex-initial" asChild>
-            <a href="#" download>
+            <a href={resumePdfUrl} download="Omar Medhat Resume.pdf">
               <Download className="mr-2 h-4 w-4" />
               Download PDF
             </a>
           </Button>
-          <Button className="flex-1 sm:flex-initial">
-            <ExternalLink className="mr-2 h-4 w-4" />
-            View Full Resume
+          <Button className="flex-1 sm:flex-initial" asChild>
+            <a href={resumePdfUrl} target="_blank" rel="noopener noreferrer">
+              <ExternalLink className="mr-2 h-4 w-4" />
+              View Full Resume
+            </a>
           </Button>
         </DialogFooter>
       </DialogContent>
