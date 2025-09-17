@@ -85,7 +85,7 @@ export default function Navbar() {
           }}
         ></div>
         
-        <a href="#" className="text-2xl font-display font-bold text-foreground glow relative z-10">Portfolio</a>
+        <a href="#" className="text-2xl font-display font-bold text-foreground glow relative z-10">Omar Solieman</a>
         
         {/* Desktop navigation */}
         <nav className="hidden md:flex items-center space-x-8 relative z-10">
