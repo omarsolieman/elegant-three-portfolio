@@ -1,53 +1,74 @@
-# Welcome to My React.js & Three.js Portfolio
+# Elegant Three.js Portfolio
 
-## Project info
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![Three.js](https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=three.js&logoColor=white)](https://threejs.org/)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-**URL**: https://omarsolieman.vercel.app
+A sleek and modern portfolio website built with React, Three.js, and Vite. This project showcases a variety of 3D models and interactive animations, demonstrating the power of WebGL in a beautiful and performant user interface.
 
-## How can I edit this code?
+**Live URL**: https://omarsolieman.vercel.app
 
-**Use your preferred IDE**
+## ✨ Features
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- **Interactive 3D Models**: Explore a collection of 3D models with smooth camera controls and animations.
+- **Stunning Visuals**: Custom shaders and post-processing effects create a unique and immersive experience.
+- **Responsive Design**: A fully responsive layout that looks great on all devices, from desktops to mobile phones.
+- **Performant Animations**: Smooth and efficient animations powered by `requestAnimationFrame` and optimized with React.
+- **Modern UI**: A clean and intuitive user interface built with Shadcn UI and Tailwind CSS.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 🛠️ Technologies Used
 
-Follow these steps:
+This project is built with a modern tech stack, including:
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- **Frontend**:
+  - [React](https://reactjs.org/)
+  - [Three.js](https://threejs.org/)
+  - [React Three Fiber](https://docs.pmnd.rs/react-three-fiber)
+  - [React Three Drei](https://github.com/pmndrs/drei)
+- **Build Tool**:
+  - [Vite](https://vitejs.dev/)
+- **Language**:
+  - [TypeScript](https://www.typescriptlang.org/)
+- **Styling**:
+  - [Tailwind CSS](https://tailwindcss.com/)
+  - [Shadcn UI](https://ui.shadcn.com/)
+- **Linting & Formatting**:
+  - [ESLint](https://eslint.org/)
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## 🚀 Getting Started
 
-# Step 3: Install the necessary dependencies.
-npm i
+To get a local copy up and running, follow these simple steps.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+### Prerequisites
 
-**Edit a file directly in GitHub**
+Make sure you have Node.js and npm installed on your machine.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- [Node.js](https://nodejs.org/) (v18 or higher recommended)
+- [npm](https://www.npmjs.com/)
 
-**Use GitHub Codespaces**
+### Installation
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+1. **Clone the repository**
+   ```sh
+   git clone https://github.com/omarsolieman/elegant-three-portfolio.git
+   ```
+2. **Navigate to the project directory**
+   ```sh
+   cd elegant-three-portfolio
+   ```
+3. **Install dependencies**
+   ```sh
+   npm install
+   ```
+4. **Start the development server**
+   ```sh
+   npm run dev
+   ```
 
-## What technologies are used for this project?
+The application will be available at `http://localhost:5173`.
 
-This project is built with:
+## 📜 License
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
