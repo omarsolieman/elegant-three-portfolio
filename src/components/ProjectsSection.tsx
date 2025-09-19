@@ -223,6 +223,35 @@ export default function ProjectsSection() {
   }, []);
   
   const projects = [
+    // Website-only projects
+    {
+      title: "Visual Turing Machine",
+      description: "Fed up with outdated Turing Machine simulators with unfriendly UI, and Hard to understand Controls I created my own, with my Component Library, beautiful UI and modern Tech Stack",
+      tags: ["React", "TypeScript", "Vite", "TailwindCSS", "Shadcn UI"],
+      modelType: "website",
+      demoLink: "https://visual-turing-machine.vercel.app/",
+      codeLink: "https://github.com/omarsolieman/elegant-three-portfolio",
+      image: "/screenshots/visturing.png"
+    },
+    {
+      title: "Vision Graph Lab",
+      description: "A Web App to visualize and understand graph and path finding algorithms with countless features, Beautiful UI and modern Tech Stack",
+      tags: ["React", "TypeScript", "Vite", "TailwindCSS", "Shadcn UI"],
+      modelType: "website",
+      demoLink: "https://vision-graph-lab.vercel.app/",
+      codeLink: "https://github.com/omarsolieman/vision-graph-lab",
+      image: "/screenshots/visgraphlab.png"
+    },
+    {
+      title: "Visual Automata",
+      description: "A modern web app for simulating finite automata with a user-friendly interface.",
+      tags: ["React", "TypeScript", "Vite", "TailwindCSS", "Shadcn UI"],
+      modelType: "website",
+      demoLink: "https://visual-finite-automata.vercel.app/",
+      codeLink: "https://github.com/omarsolieman/visual-finite-automata",
+      image: "/screenshots/visautomata.png"
+    },
+    // 3D/IoT/other projects (no screenshot)
     {
       title: "Low-Cost Local Smart Home System",
       description: "Off The shelf components modded and improved to build a Localized, reliable and affordable smart home system.",
@@ -334,18 +363,32 @@ export default function ProjectsSection() {
           {projects.map((project, i) => (
             <TiltCard 
               key={i} 
-              className="h-full"
+              className="h-full w-full"
             >
               <Card 
                 className={`bg-secondary/30 border-secondary overflow-hidden transform transition-all duration-300 h-full ${activeCard === i ? 'ring-1 ring-primary/20' : ''}`}
                 onMouseEnter={() => setActiveCard(i)}
                 onMouseLeave={() => setActiveCard(null)}
               >
-                {/* Preview Section */}
-                {project.modelType === "glb" ? (
-                  <ModelViewerPreview hovered={activeCard === i} url={project.modelUrl} />
+                {/* Preview Section: Website projects get full-width screenshot, others get centered model */}
+                {project.image ? (
+                  <div className="w-full bg-black/10 h-[220px]">
+                    <img
+                      src={project.image}
+                      alt={project.title + ' screenshot'}
+                      className="object-cover w-full h-full rounded-t-lg"
+                      style={{ display: 'block', width: '100%', height: '100%' }}
+                    />
+                  </div>
                 ) : (
-                  <Project3DPreview modelType={project.modelType} hovered={activeCard === i} />
+                  <div className="w-full flex items-center justify-center">
+                    {/* Center model for non-website projects */}
+                    {project.modelType === "glb" ? (
+                      <ModelViewerPreview hovered={activeCard === i} url={project.modelUrl} />
+                    ) : (
+                      <Project3DPreview modelType={project.modelType} hovered={activeCard === i} />
+                    )}
+                  </div>
                 )}
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
@@ -373,15 +416,14 @@ export default function ProjectsSection() {
                         <span>Code</span>
                       </a>
                     </Button>
-                    <DialogTrigger asChild>
-                      <Button 
-                        size="sm" 
-                        className="flex items-center gap-2 group btn-fancy"
-                      >
-                        <span>Demo</span>
-                        <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    {project.demoLink && project.demoLink !== "#" && (
+                      <Button asChild size="sm" className="flex items-center gap-2 group btn-fancy">
+                        <a href={project.demoLink} target="_blank" rel="noopener noreferrer">
+                          <span>Live Site</span>
+                          <ExternalLink className="w-4 h-4 group-hover:text-primary transition-colors" />
+                        </a>
                       </Button>
-                    </DialogTrigger>
+                    )}
                   </CardFooter>
                   <DialogContent className="sm:max-w-[525px] bg-secondary/90 backdrop-blur-sm border-primary/10">
                     <DialogHeader>
@@ -395,6 +437,9 @@ export default function ProjectsSection() {
                       <p className="text-sm text-muted-foreground mb-1">Tags: {project.tags.join(', ')}</p>
                       <p className="text-sm text-muted-foreground mb-1">Model Type: {project.modelType}</p>
                       {project.demoLink && <p className="text-sm text-muted-foreground">Demo Link: {project.demoLink}</p>}
+                      {project.image && (
+                        <img src={project.image} alt={project.title + ' screenshot'} className="object-cover rounded-lg w-full mt-2" />
+                      )}
                     </div>
                     <DialogFooter className="justify-between sm:justify-between">
                       <DialogClose asChild>
@@ -410,10 +455,10 @@ export default function ProjectsSection() {
                             </a>
                           </Button>
                         )}
-                        {project.demoLink && (
+                        {project.demoLink && project.demoLink !== "#" && (
                           <Button asChild size="sm" className="flex items-center gap-2">
                             <a href={project.demoLink} target="_blank" rel="noopener noreferrer">
-                              Open Demo <ExternalLink className="w-4 h-4" />
+                              Live Site <ExternalLink className="w-4 h-4" />
                             </a>
                           </Button>
                         )}

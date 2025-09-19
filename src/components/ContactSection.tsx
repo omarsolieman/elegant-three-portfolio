@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Github, Linkedin, Mail, Send, Twitter, Sparkles, Instagram } from "lucide-react";
 import { useState } from "react";
+import emailjs from "@emailjs/browser";
 
 export default function ContactSection() {
   const [formState, setFormState] = useState({
@@ -13,10 +14,38 @@ export default function ContactSection() {
   });
   
   const [isHovered, setIsHovered] = useState(null);
-  
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormState(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSending(true);
+    setError("");
+    setSent(false);
+    try {
+      await emailjs.send(
+        "service_ixvye0n",
+        "template_d9n4v8d",
+        {
+          name: formState.name,
+          email: formState.email,
+          message: formState.message,
+          title: "Contact Form Submission"
+        },
+        "N1rqfI6YkDl7U8H8P"
+      );
+      setSent(true);
+      setFormState({ name: "", email: "", message: "" });
+    } catch (err) {
+      setError("Failed to send. Please try again.");
+    }
+    setSending(false);
   };
 
   return (
@@ -42,7 +71,7 @@ export default function ContactSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto magic-border bg-secondary/20 p-8 rounded-2xl border border-secondary/50 backdrop-blur-sm hover-scale">
           <div>
             <h3 className="text-xl font-display font-semibold mb-4">Send Me a Message</h3>
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleSubmit}>
               <div className="relative overflow-hidden rounded-md group">
                 <Input 
                   type="text" 
@@ -75,9 +104,20 @@ export default function ContactSection() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none"></div>
               </div>
-              <Button type="submit" className="w-full flex items-center gap-2 bg-secondary/80 hover:bg-secondary/90 group btn-fancy">
-                <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" /> Send Message
+              <Button
+                type="submit"
+                className={`w-full flex items-center gap-2 bg-secondary/80 group btn-fancy ${sending ? "opacity-70 cursor-not-allowed" : "hover:bg-secondary/90"}`}
+                disabled={sending}
+              >
+                <Send className={`w-4 h-4 group-hover:translate-x-1 transition-transform ${sending ? "animate-pulse" : ""}`} />
+                {sending ? "Sending..." : "Send Message"}
               </Button>
+              {sent && (
+                <div className="text-green-600 text-sm mt-2">Message sent successfully!</div>
+              )}
+              {error && (
+                <div className="text-red-600 text-sm mt-2">{error}</div>
+              )}
             </form>
           </div>
           
